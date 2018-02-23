@@ -48,6 +48,19 @@ CREATE
 			phone varchar(20) NOT NULL,
 			email varchar(30) NOT NULL,
 			specialization varchar(30) NOT NULL,
-		)
-
+		);
+CREATE 
+	TABLE
+		Prescriptions
+		(
+			pID integer PRIMARY KEY,
+			cID integer, 
+			dID integer,
+			startDate Date NOT NULL,
+			endDate Date NOT NULL,
+			FOREIGN KEY cID REFERENCING Clients
+			FOREIGN KEY dID REFERENCING HealthPractitioner
+			
+		);
+		
 		
