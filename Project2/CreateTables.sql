@@ -1,66 +1,69 @@
-CREATE TYPE Gen AS ENUM ('MALE','FEMALE','OTHER');
-CREATE 
-	TABLE
-		Clients
-		(
-			cID integer PRIMARY KEY,
-			email varchar(30) NOT NULL,
-			phone varchar(20) NOT NULL,
-			address text NOT NULL,
-			account varchar(30) NOT NULL
-		);
+CREATE
+	TYPE gender AS ENUM(
+		'MALE',
+		'FEMALE',
+		'OTHER'
+	);
+
 CREATE
 	TABLE
-		Individuals 
-		(
-		cID integer PRIMARY KEY,
-		fName VARCHAR(30) NOT NULL,
-		lName varchar(30) NOT NULL,
-		gender Gen NOT NULL,
-		birthdate date NOT NULL,
-		FOREIGN KEY (cID) REFERENCES Clients
+		Clients(
+			cID INTEGER PRIMARY KEY,
+			email VARCHAR(30) NOT NULL,
+			phone VARCHAR(20) NOT NULL,
+			address TEXT NOT NULL,
+			account VARCHAR(30) NOT NULL
 		);
-CREATE 
-	TABLE 
-		InsurancePlans
-		(
-			planID integer PRIMARY KEY,
-			coverage text NOT NULL,
-			price integer NOT NULL,
-			pName varchar(30) NOT NULL
-		);
+
 CREATE
 	TABLE
-		Companies
-		(
-			cID integer PRIMARY KEY,
-			compName varchar(30) NOT NULL,
-			numEmploy integer NOT NULL,
-			FOREIGN KEY (cID) REFERENCES Clients
-		);
-CREATE
-	TABLE
-		HealthPractitioner
-		(
-			dID integer PRIMARY KEY,
+		Individuals(
+			cID INTEGER PRIMARY KEY,
 			fName VARCHAR(30) NOT NULL,
-			lName varchar(30) NOT NULL,
-			phone varchar(20) NOT NULL,
-			email varchar(30) NOT NULL,
-			specialization varchar(30) NOT NULL,
+			lName VARCHAR(30) NOT NULL,
+			gender gender NOT NULL,
+			birthdate DATE NOT NULL,
+			FOREIGN KEY(cID) REFERENCES Clients
 		);
-CREATE 
+
+CREATE
 	TABLE
-		Prescriptions
-		(
-			pID integer PRIMARY KEY,
-			cID integer, 
-			dID integer,
-			startDate Date NOT NULL,
-			endDate Date NOT NULL,
-			FOREIGN KEY cID REFERENCING Clients
-			FOREIGN KEY dID REFERENCING HealthPractitioner
-			
+		InsurancePlans(
+			planID INTEGER PRIMARY KEY,
+			coverage TEXT NOT NULL,
+			price INTEGER NOT NULL,
+			pName VARCHAR(30) NOT NULL
 		);
-		
-		
+
+CREATE
+	TABLE
+		Companies(
+			cID INTEGER PRIMARY KEY,
+			compName VARCHAR(30) NOT NULL,
+			numEmploy INTEGER NOT NULL,
+			FOREIGN KEY(cID) REFERENCES Clients
+		);
+
+CREATE
+	TABLE
+		HealthPractitioner(
+			dID INTEGER PRIMARY KEY,
+			fName VARCHAR(30) NOT NULL,
+			lName VARCHAR(30) NOT NULL,
+			phone VARCHAR(20) NOT NULL,
+			email VARCHAR(30) NOT NULL,
+			specialization VARCHAR(30) NOT NULL
+		);
+
+CREATE
+	TABLE
+		Prescriptions(
+			pID INTEGER PRIMARY KEY,
+			cID INTEGER,
+			dID INTEGER,
+			startDate DATE NOT NULL,
+			endDate DATE NOT NULL,
+			FOREIGN KEY(cID) REFERENCES Clients,
+			FOREIGN KEY(dID) REFERENCES HealthPractitioner
+		);
+
