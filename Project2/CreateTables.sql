@@ -13,4 +13,12 @@ CREATE
 		birthdate date NOT NULL,
 		account varchar(30) NOT NULL UNIQUE 
 		);
-DROP TABLE Clients;
+CREATE 
+	TABLE 
+		InsureancePlans
+		(
+			planID integer PRIMARY KEY,
+			coverage text NOT NULL,
+			price integer NOT NULL,
+			pName varchar(30) NOT NULL
+		);
