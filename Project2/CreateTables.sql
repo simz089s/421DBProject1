@@ -38,6 +38,16 @@ CREATE
 			numEmploy integer NOT NULL,
 			FOREIGN KEY (cID) REFERENCES Clients
 		);
-
+CREATE
+	TABLE
+		HealthPractitioner
+		(
+			dID integer PRIMARY KEY,
+			fName VARCHAR(30) NOT NULL,
+			lName varchar(30) NOT NULL,
+			phone varchar(20) NOT NULL,
+			email varchar(30) NOT NULL,
+			specialization varchar(30) NOT NULL,
+		)
 
 		
