@@ -67,134 +67,144 @@ CREATE
 			FOREIGN KEY(dID) REFERENCES HealthPractitioner
 		);
 
-CREATE 
+CREATE
 	TABLE
-		Healthfacilities
-		(
-			hID integer PRIMARY KEY,
-			hname varchar(30) NOT NULL,
-			address text NOT NULL,
-			phone varchar(20) NOT NULL,
-			fType text NOT NULL
-		);
-
-CREATE 
-	TABLE
-		Pharmacists
-		(
-			dID integer PRIMARY KEY,
-			FOREIGN KEY (dID) REFERENCES healthpractitioner
-		);
-		
-CREATE 
-	TABLE
-		Reciepts
-		(
-			rID integer PRIMARY KEY,
-			cID integer,
-			pID integer,
-			date Date NOT NULL,
-			totalprice integer NOT NULL,
-			CHECK (totalprice > 0),
-			FOREIGN KEY (cID) REFERENCES clients,
-			FOREIGN KEY (pID) REFERENCES Pharmacists
+		HealthFacilities(
+			hID INTEGER PRIMARY KEY,
+			hName VARCHAR(30) NOT NULL,
+			address TEXT NOT NULL,
+			phone VARCHAR(20) NOT NULL,
+			fType TEXT NOT NULL
 		);
 
 CREATE
 	TABLE
-		Drugs
-		(
-			duID integer PRIMARY KEY,
-			dName varchar(30) NOT NULL,
-			manufacturer varchar(30) NOT NULL,
-			price integer NOT NULL,
-			CHECK (price > 0)
+		Pharmacists(
+			dID INTEGER PRIMARY KEY,
+			FOREIGN KEY(dID) REFERENCES HealthPractitioner
 		);
 
 CREATE
 	TABLE
-		Subscriptions
-			(
-				subID integer PRIMARY KEY, 
-				cID integer,
-				planID integer,
-				startDate Date NOT NULL,
-				endDate Date NOT NULL,
-				FOREIGN KEY (cid) REFERENCES clients,
-				FOREIGN KEY (planId) REFERENCES insuranceplans
-			);
+		Receipts(
+			rID INTEGER PRIMARY KEY,
+			cID INTEGER,
+			pID INTEGER,
+			DATE DATE NOT NULL,
+			totalPrice INTEGER NOT NULL,
+			CHECK(
+				totalPrice > 0
+			),
+			FOREIGN KEY(cID) REFERENCES Clients,
+			FOREIGN KEY(pID) REFERENCES Pharmacists
+		);
 
 CREATE
 	TABLE
-		Insuranceclaims
-		(
-			icID integer PRIMARY KEY,
-			subID integer,
-			date Date NOT NULL,
-			FOREIGN KEY (subID) REFERENCES Subscriptions	
+		Drugs(
+			duID INTEGER PRIMARY KEY,
+			dName VARCHAR(30) NOT NULL,
+			manufacturer VARCHAR(30) NOT NULL,
+			price INTEGER NOT NULL,
+			CHECK(
+				price > 0
+			)
 		);
-
-/*Relationships */
 
 CREATE
-	TABLE 
-		PrescriptionContants
-		(
-			pID integer,
-			duID integer,
-			quantity integer NOT NULL,
-			refills integer NOT NULL,
-			PRIMARY KEY (pID,duID),
-			FOREIGN KEY (pID) REFERENCES prescriptions,
-			FOREIGN KEY (duID) REFERENCES drugs
-		);
-
-CREATE 
 	TABLE
-		WorksAt
-		(
-			dID integer,
-			hID integer,
-			PRIMARY KEY (dID,hID),
-			FOREIGN KEY (dID) REFERENCES healthpractitioner,
-			FOREIGN KEY (hid) REFERENCES healthfacilities
+		Subscriptions(
+			subID INTEGER PRIMARY KEY,
+			cID INTEGER,
+			planID INTEGER,
+			startDate DATE NOT NULL,
+			endDate DATE NOT NULL,
+			FOREIGN KEY(cid) REFERENCES Clients,
+			FOREIGN KEY(planId) REFERENCES InsurancePlans
 		);
 
 CREATE
-	TABLE 
-		ReceiptDrugs
-		(
-			rID integer,
-			duID integer,
-			price integer NOT NULL,
-			quantity integer NOT NULL,
-			PRIMARY KEY (rID,duID),
-			FOREIGN KEY (rID) REFERENCES reciepts,
-			FOREIGN KEY (duID) REFERENCES drugs,
-			CHECK (price > 0),
-			CHECK (amount > 0)
+	TABLE
+		InsuranceClaims(
+			icID INTEGER PRIMARY KEY,
+			subID INTEGER,
+			DATE DATE NOT NULL,
+			FOREIGN KEY(subID) REFERENCES Subscriptions
+		);
+
+-- Relationships
+
+CREATE
+	TABLE
+		PrescriptionContents(
+			pID INTEGER,
+			duID INTEGER,
+			quantity INTEGER NOT NULL,
+			refills INTEGER NOT NULL,
+			PRIMARY KEY(
+				pID,
+				duID
+			),
+			FOREIGN KEY(pID) REFERENCES Prescriptions,
+			FOREIGN KEY(duID) REFERENCES Drugs
 		);
 
 CREATE
-	TABLE 
-		Rembursed
-		(
-			subID integer,
-			icID integer PRIMARY KEY,
-			amount integer,
-			DATA Date NOT NULL,
-			FOREIGN KEY (icID) REFERENCES insuranceclaims,
-			FOREIGN KEY (subID) REFERENCES subscriptions
+	TABLE
+		WorksAt(
+			dID INTEGER,
+			hID INTEGER,
+			PRIMARY KEY(
+				dID,
+				hID
+			),
+			FOREIGN KEY(dID) REFERENCES HealthPractitioner,
+			FOREIGN KEY(hid) REFERENCES HealthFacilities
 		);
 
-CREATE 
-	TABLE 
-		Covers
-			(
-				planID integer,
-				duID integer,
-				PRIMARY KEY (planID,duID),
-				FOREIGN KEY (planID) REFERENCES insuranceplans,
-				FOREIGN KEY (duID) REFERENCES drugs
-			);
+CREATE
+	TABLE
+		ReceiptDrugs(
+			rID INTEGER,
+			duID INTEGER,
+			price INTEGER NOT NULL,
+			quantity INTEGER NOT NULL,
+			amount INTEGER NOT NULL,
+			PRIMARY KEY(
+				rID,
+				duID
+			),
+			FOREIGN KEY(rID) REFERENCES Receipts,
+			FOREIGN KEY(duID) REFERENCES Drugs,
+			CHECK(
+				price > 0
+			),
+			CHECK(
+				amount > 0
+			)
+		);
+
+CREATE
+	TABLE
+		Reimbursed(
+			subID INTEGER,
+			icID INTEGER PRIMARY KEY,
+			amount INTEGER,
+			DATA DATE NOT NULL,
+			FOREIGN KEY(icID) REFERENCES InsuranceClaims,
+			FOREIGN KEY(subID) REFERENCES Subscriptions
+		);
+
+CREATE
+	TABLE
+		Covers(
+			planID INTEGER,
+			duID INTEGER,
+			PRIMARY KEY(
+				planID,
+				duID
+			),
+			FOREIGN KEY(planID) REFERENCES InsurancePlans,
+			FOREIGN KEY(duID) REFERENCES Drugs
+		);
 
