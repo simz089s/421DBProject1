@@ -1,8 +1,8 @@
 CREATE
 	TYPE gender AS ENUM(
-		'MALE',
-		'FEMALE',
-		'OTHER'
+		'Male',
+		'Female',
+		'Other'
 	);
 
 CREATE
@@ -47,12 +47,12 @@ CREATE
 CREATE
 	TABLE
 		HealthPractitioner(
-			dID INTEGER PRIMARY KEY,
+			dID int8 PRIMARY KEY,
 			fName VARCHAR(30) NOT NULL,
 			lName VARCHAR(30) NOT NULL,
 			phone VARCHAR(20) NOT NULL,
 			email VARCHAR(30) NOT NULL,
-			specialization VARCHAR(30) NOT NULL
+			specialization VARCHAR(60) NOT NULL
 		);
 
 CREATE
@@ -103,8 +103,8 @@ CREATE
 	TABLE
 		Drugs(
 			duID INTEGER PRIMARY KEY,
-			dName VARCHAR(30) NOT NULL,
-			manufacturer VARCHAR(30) NOT NULL,
+			dName VARCHAR(200) NOT NULL,
+			manufacturer VARCHAR(200) NOT NULL,
 			price INTEGER NOT NULL,
 			CHECK(
 				price > 0
@@ -208,4 +208,4 @@ CREATE
 			FOREIGN KEY(duID) REFERENCES Drugs
 		);
 
-select 'drop table '||table_name||' cascade constraints;' from Group_cs421;
+select table_name from information_schema.columns where column_name = 'price'
