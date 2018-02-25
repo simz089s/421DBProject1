@@ -208,3 +208,4 @@ CREATE
 			FOREIGN KEY(duID) REFERENCES Drugs
 		);
 
+select 'drop table '||table_name||' cascade constraints;' from Group_cs421;
