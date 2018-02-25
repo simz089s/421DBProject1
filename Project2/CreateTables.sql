@@ -195,4 +195,10 @@ CREATE
 			FOREIGN KEY(duID) REFERENCES Drugs
 		);
 
-select table_name from information_schema.columns where column_name = 'price'
+SELECT
+	table_name
+FROM
+	information_schema.columns
+WHERE
+	column_name = 'price';
+
