@@ -31,7 +31,7 @@ CREATE
 		InsurancePlans(
 			planID INTEGER PRIMARY KEY,
 			coverage TEXT NOT NULL,
-			price INTEGER NOT NULL,
+			price money NOT NULL,
 			pName VARCHAR(30) NOT NULL
 		);
 
@@ -90,11 +90,8 @@ CREATE
 			rID INTEGER PRIMARY KEY,
 			cID INTEGER,
 			pID INTEGER,
-			DATE DATE NOT NULL,
-			totalPrice INTEGER NOT NULL,
-			CHECK(
-				totalPrice > 0
-			),
+			date DATE NOT NULL,
+			totalPrice money NOT NULL,
 			FOREIGN KEY(cID) REFERENCES Clients,
 			FOREIGN KEY(pID) REFERENCES Pharmacists
 		);
@@ -105,10 +102,7 @@ CREATE
 			duID INTEGER PRIMARY KEY,
 			dName VARCHAR(200) NOT NULL,
 			manufacturer VARCHAR(200) NOT NULL,
-			price INTEGER NOT NULL,
-			CHECK(
-				price > 0
-			)
+			price money NOT NULL,
 		);
 
 CREATE
@@ -167,21 +161,14 @@ CREATE
 		ReceiptDrugs(
 			rID INTEGER,
 			duID INTEGER,
-			price INTEGER NOT NULL,
+			price money NOT NULL,
 			quantity INTEGER NOT NULL,
-			amount INTEGER NOT NULL,
 			PRIMARY KEY(
 				rID,
 				duID
 			),
 			FOREIGN KEY(rID) REFERENCES Receipts,
 			FOREIGN KEY(duID) REFERENCES Drugs,
-			CHECK(
-				price > 0
-			),
-			CHECK(
-				amount > 0
-			)
 		);
 
 CREATE
@@ -189,7 +176,7 @@ CREATE
 		Reimbursed(
 			subID INTEGER,
 			icID INTEGER PRIMARY KEY,
-			amount INTEGER,
+			amount money,
 			DATA DATE NOT NULL,
 			FOREIGN KEY(icID) REFERENCES InsuranceClaims,
 			FOREIGN KEY(subID) REFERENCES Subscriptions
