@@ -214,5 +214,6 @@ FROM
 WHERE
 	schemaname = 'cs421g24'
 ORDER BY
-	n_live_tup;
+	n_live_tup,
+	relname;
 
