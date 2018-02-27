@@ -1,6 +1,43 @@
 -- Orbital Ion Cannon Nuke
-
---DROP TABLE IF EXISTS table_name CASCADE;
-
---DROP TYPE IF EXISTS CASCADE;
-
+--
+--DROP TABLE
+--	IF EXISTS
+--		prescriptions,
+--		insuranceplans,
+--		individuals,
+--		healthpractitioner,
+--		companies,
+--		clients,
+--		covers,
+--		drugs,
+--		healthfacilities,
+--		insuranceclaims,
+--		pharmacists,
+--		prescriptioncontents,
+--		receipts,
+--		reimbursed,
+--		subscriptions,
+--		worksat
+--CASCADE;
+--
+--DROP TYPE
+--	IF EXISTS
+--		gender,
+--		prescriptions,
+--		insuranceplans,
+--		individuals,
+--		healthpractitioner,
+--		companies,
+--		clients,
+--		covers,
+--		drugs,
+--		healthfacilities,
+--		insuranceclaims,
+--		pharmacists,
+--		prescriptioncontents,
+--		receipts,
+--		reimbursed,
+--		subscriptions,
+--		worksat
+--CASCADE;
+--
