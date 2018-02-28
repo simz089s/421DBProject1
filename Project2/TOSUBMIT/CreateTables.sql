@@ -88,7 +88,7 @@ CREATE
 	TABLE
 		Receipts(
 			rID INTEGER PRIMARY KEY,
-			cID INTEGER,
+			dID INTEGER,
 			pID INTEGER,
 			date DATE NOT NULL,
 			totalPrice money NOT NULL,
@@ -121,9 +121,7 @@ CREATE
 	TABLE
 		InsuranceClaims(
 			icID INTEGER PRIMARY KEY,
-			subID INTEGER,
 			DATE DATE NOT NULL,
-			FOREIGN KEY(subID) REFERENCES Subscriptions
 		);
 
 -- Relationships
@@ -161,7 +159,6 @@ CREATE
 		ReceiptDrugs(
 			rID INTEGER,
 			duID INTEGER,
-			price money NOT NULL,
 			quantity INTEGER NOT NULL,
 			PRIMARY KEY(
 				rID,
