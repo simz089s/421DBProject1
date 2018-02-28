@@ -10,9 +10,16 @@ except ImportError:
 
 # The filepath of the file you want to change
 sqlfilepath = sys.argv[1]
+################################################################################
+# Extra space before closing parenthesis
+extra_space = False
+if extra_space:
+    extraspace = ' '
+else:
+    extraspace = ''
 # The list of random values you want to give
 first = 1
-last = 51
+last = 101
 try:
     vals = map(lambda x: x+1, list(np.random.permutation(last-1)))
 except NameError:
@@ -26,6 +33,7 @@ with open('./healthpractitionersgen_col0.txt', "r") as txtfile:
     vals = []
     for line in txtfile:
         vals.append(line.strip())
+################################################################################
 # What to surround value with e.g. nothing for INTEGER and ' for VARCHAR and others
 # The column (index) to replace
 if len(sys.argv) is 4:
@@ -48,7 +56,7 @@ for line in sqlfile:
         # line.replace(" ", "")
         newlinearr = line[8:-3].split(',')
         newlinearr[col] = ' ' + around + str(vals[i]) + around
-        newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + ' );\n'
+        newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + extraspace + ');\n'
         newsqltext.append(newline)
         i+=1
     else:

@@ -17,7 +17,7 @@ sqlfile = open(sqlfilepath, mode="r")
 
 sqlcol = []
 for line in sqlfile:
-    if line.startswith('VALUES( '):
+    if line.startswith('VALUES( ') and line[-15:-5] == "Pharmacist":
         sqlcol.append(line[8:-3].split(',')[col].replace("'", ""))
 
 sqlfile.close()

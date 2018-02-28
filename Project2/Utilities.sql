@@ -24,8 +24,10 @@ ORDER BY
 SELECT
 	*
 FROM
-	
-ORDER BY
+	healthpractitioners
+WHERE
+	specialization='Pharmacist'
+--ORDER BY
 	;
 
 -- Delete table rows
@@ -44,6 +46,6 @@ DROP
 
 -- Table altering (also careful)
 ALTER TABLE
-	cs421g24.pharmacists ALTER COLUMN did TYPE INT8
+	cs421g24.prescriptions ALTER COLUMN did TYPE INT8
 		USING did::INT8;
 
