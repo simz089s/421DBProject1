@@ -113,7 +113,7 @@ INSERT INTO insuranceclaims( icid, subid, DATE )
 VALUES( 45, 44, '2019-07-31 17:17:27' );
 
 --INSERT INTO insuranceclaims( icid, subid, DATE )
---VALUES( 42, 38, '2010-02-06 00:07:56' );
+--VALUES( 42, 0, '2010-02-06 00:07:56' );
 
 INSERT INTO insuranceclaims( icid, subid, DATE )
 VALUES( 39, 34, '2010-02-06 00:07:56' );
