@@ -24,9 +24,9 @@ ORDER BY
 SELECT
 	*
 FROM
-	healthpractitioners
+	subscriptions
 WHERE
-	specialization='Pharmacist'
+	startdate > enddate
 --ORDER BY
 	;
 
