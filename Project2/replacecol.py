@@ -11,8 +11,8 @@ except ImportError:
 # The filepath of the file you want to change
 sqlfilepath = sys.argv[1]
 # The list of random values you want to give
-first = 100000 / 10000
-last = 1000000 / 10000
+first = 1
+last = 51
 try:
     vals = list(np.random.permutation(last))
 except NameError:
@@ -52,7 +52,7 @@ for line in sqlfile:
 
 sqlfile.close()
 
-newsqltext.append("\n")
+# newsqltext.append("\n")
 newsqltext = ''.join(newsqltext)
 print(newsqltext)
 sqlfile = open(sqlfilepath, mode="w")

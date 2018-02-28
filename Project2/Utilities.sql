@@ -22,11 +22,11 @@ ORDER BY
 
 -- Just some normal projection
 SELECT
-	planid
+	*
 FROM
-	insuranceplans
+	subscriptions
 ORDER BY
-	planid;
+	subid;
 
 -- Delete table rows
 -- Please be careful and passively sanitize (neutralize) these kind of SQL statements when you aren't using them
