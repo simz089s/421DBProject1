@@ -44,19 +44,17 @@ for line in sqlfile:
         # line.replace(" ", "")
         newlinearr = line[8:-3].split(',')
         newlinearr[col] = ' ' + around + str(vals[i]) + around
-        newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + ');'
-        print(newline)
+        newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + ');\n'
+        newsqltext.append(newline)
         i+=1
     else:
         newsqltext.append(line)
 
 sqlfile.close()
 
-# while newsqltext[-1] == "\n":
-#     newsqltext.pop(-1)
-# newsqltext.append("\n")
-# newsqltext = ''.join(newsqltext)
-# print(newsqltext)
-# sqlfile = open(sqlfilepath, mode="w")
-# sqlfile.write(newsqltext)
-# sqlfile.close()
+newsqltext.append("\n")
+newsqltext = ''.join(newsqltext)
+print(newsqltext)
+sqlfile = open(sqlfilepath, mode="w")
+sqlfile.write(newsqltext)
+sqlfile.close()
