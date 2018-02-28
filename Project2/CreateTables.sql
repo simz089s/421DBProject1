@@ -46,7 +46,7 @@ CREATE
 
 CREATE
 	TABLE
-		HealthPractitioner(
+		HealthPractitioners(
 			dID int8 PRIMARY KEY,
 			fName VARCHAR(30) NOT NULL,
 			lName VARCHAR(30) NOT NULL,
@@ -64,7 +64,7 @@ CREATE
 			startDate DATE NOT NULL,
 			endDate DATE NOT NULL,
 			FOREIGN KEY(cID) REFERENCES Clients,
-			FOREIGN KEY(dID) REFERENCES HealthPractitioner
+			FOREIGN KEY(dID) REFERENCES HealthPractitioners
 		);
 
 CREATE
@@ -80,8 +80,8 @@ CREATE
 CREATE
 	TABLE
 		Pharmacists(
-			dID INTEGER PRIMARY KEY,
-			FOREIGN KEY(dID) REFERENCES HealthPractitioner
+			dID INT8 PRIMARY KEY,
+			FOREIGN KEY(dID) REFERENCES HealthPractitioners
 		);
 
 CREATE
@@ -152,7 +152,7 @@ CREATE
 				dID,
 				hID
 			),
-			FOREIGN KEY(dID) REFERENCES HealthPractitioner,
+			FOREIGN KEY(dID) REFERENCES HealthPractitioners,
 			FOREIGN KEY(hid) REFERENCES HealthFacilities
 		);
 

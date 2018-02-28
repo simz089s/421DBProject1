@@ -24,15 +24,26 @@ ORDER BY
 SELECT
 	*
 FROM
-	subscriptions
+	
 ORDER BY
-	subid;
+	;
 
 -- Delete table rows
 -- Please be careful and passively sanitize (neutralize) these kind of SQL statements when you aren't using them
 DELETE
 FROM
-	covers
+	
 WHERE
-	planid < 0;
+	id < 0;
+
+-- Drop single table
+-- Once again be careful and neutralize the SQL statement when done...
+DROP
+	TABLE
+		;
+
+-- Table altering (also careful)
+ALTER TABLE
+	cs421g24.pharmacists ALTER COLUMN did TYPE INT8
+		USING did::INT8;
 

@@ -14,7 +14,7 @@ sqlfilepath = sys.argv[1]
 first = 1
 last = 51
 try:
-    vals = list(np.random.permutation(last))
+    vals = map(lambda x: x+1, list(np.random.permutation(last-1)))
 except NameError:
     try:
         vals = [i for i in xrange(first, last)]
@@ -22,6 +22,10 @@ except NameError:
         vals = [i for i in range(first, last)]
 shuffle(vals)
 vals = tuple(vals)
+with open('./healthpractitionersgen_col0.txt', "r") as txtfile:
+    vals = []
+    for line in txtfile:
+        vals.append(line.strip())
 # What to surround value with e.g. nothing for INTEGER and ' for VARCHAR and others
 # The column (index) to replace
 if len(sys.argv) is 4:
@@ -44,7 +48,7 @@ for line in sqlfile:
         # line.replace(" ", "")
         newlinearr = line[8:-3].split(',')
         newlinearr[col] = ' ' + around + str(vals[i]) + around
-        newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + ');\n'
+        newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + ' );\n'
         newsqltext.append(newline)
         i+=1
     else:

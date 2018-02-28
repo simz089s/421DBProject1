@@ -25,4 +25,5 @@ sqlfile.close()
 print(sqlcol)
 with open(sqlfilepath[:-4]+'_col'+str(col)+'.txt', mode="w") as sqlfile:
     for val in sqlcol:
-        sqlfile.write(val+",\n")
+        # sqlfile.write(val+",\n")
+        sqlfile.write(val+"\n")
