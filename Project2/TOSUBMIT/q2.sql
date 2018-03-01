@@ -103,13 +103,13 @@ CREATE TABLE insuranceclaims (
 	CONSTRAINT insuranceclaims_rid_fkey FOREIGN KEY (rid) REFERENCES receipts(rid)
 );
 
-CREATE TABLE subscriptions (
-	subid int4 NOT NULL,
+CREATE TABLE cs421g24.subscriptions (
 	cid int4 NULL,
 	planid int4 NULL,
 	startdate date NOT NULL,
 	enddate date NOT NULL,
-	CONSTRAINT subscriptions_pkey PRIMARY KEY (subid),
+	subid serial NOT NULL,
+	CONSTRAINT subscriptions_pk PRIMARY KEY (subid),
 	CONSTRAINT subscriptions_cid_fkey FOREIGN KEY (cid) REFERENCES clients(cid),
 	CONSTRAINT subscriptions_planid_fkey FOREIGN KEY (planid) REFERENCES insuranceplans(planid)
 );
