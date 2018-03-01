@@ -26,7 +26,7 @@ FROM subscriptions S, individuals I, insuranceplans P
 WHERE S.planid = P.planid AND I.cid = S.cid
 GROUP BY I.gender;
 
-/* Get individuals who have a birthdate in the 20th century and have been rembursed more than 20$ */
+/* Get individuals who have a birthdate in the 20th century and have been reimbursed more than 20$ */
 SELECT
 	DISTINCT(I.birthdate),
 	I.cid,
