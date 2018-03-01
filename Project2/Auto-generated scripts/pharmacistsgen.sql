@@ -1,0 +1,27 @@
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(2227808233);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(1295158795);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(7508610318);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(3758609089);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(8340920723);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(4443488936);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(8911712167);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(1921953497);
+INSERT INTO cs421g24.pharmacists
+(did)
+VALUES(9628332635);
