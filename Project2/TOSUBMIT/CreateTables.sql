@@ -1,194 +1,159 @@
-CREATE
-	TYPE gender AS ENUM(
-		'Male',
-		'Female',
-		'Other'
-	);
+CREATE TYPE gender AS ENUM(
+	'Male',
+	'Female',
+	'Other'
+);
 
-CREATE
-	TABLE
-		Clients(
-			cID INTEGER PRIMARY KEY,
-			email VARCHAR(30) NOT NULL,
-			phone VARCHAR(20) NOT NULL,
-			address TEXT NOT NULL,
-			account VARCHAR(30) NOT NULL
-		);
+CREATE TABLE cs421g24.companies (
+	cid int4 NOT NULL,
+	compname varchar(30) NOT NULL,
+	numemploy int4 NOT NULL,
+	CONSTRAINT companies_pkey PRIMARY KEY (cid),
+	CONSTRAINT companies_cid_fkey FOREIGN KEY (cid) REFERENCES clients(cid)
+);
 
-CREATE
-	TABLE
-		Individuals(
-			cID INTEGER PRIMARY KEY,
-			fName VARCHAR(30) NOT NULL,
-			lName VARCHAR(30) NOT NULL,
-			gender gender NOT NULL,
-			birthdate DATE NOT NULL,
-			FOREIGN KEY(cID) REFERENCES Clients
-		);
+CREATE TABLE cs421g24.healthfacilities (
+	hid int4 NOT NULL,
+	hname varchar(30) NOT NULL,
+	address text NOT NULL,
+	phone varchar(20) NOT NULL,
+	ftype text NOT NULL,
+	CONSTRAINT healthfacilities_pkey PRIMARY KEY (hid)
+);
 
-CREATE
-	TABLE
-		InsurancePlans(
-			planID INTEGER PRIMARY KEY,
-			coverage TEXT NOT NULL,
-			price money NOT NULL,
-			pName VARCHAR(30) NOT NULL
-		);
+CREATE TABLE cs421g24.individuals (
+	cid int4 NOT NULL,
+	fname varchar(30) NOT NULL,
+	lname varchar(30) NOT NULL,
+	birthdate date NOT NULL,
+	genders varchar NULL,
+	CONSTRAINT individuals_pkey PRIMARY KEY (cid),
+	CONSTRAINT individuals_cid_fkey FOREIGN KEY (cid) REFERENCES clients(cid)
+);
 
-CREATE
-	TABLE
-		Companies(
-			cID INTEGER PRIMARY KEY,
-			compName VARCHAR(30) NOT NULL,
-			numEmploy INTEGER NOT NULL,
-			FOREIGN KEY(cID) REFERENCES Clients
-		);
+CREATE TABLE cs421g24.receiptdrugs (
+	rid int4 NOT NULL,
+	duid int4 NOT NULL,
+	quantity int4 NOT NULL,
+	CONSTRAINT receiptdrugs_pkey PRIMARY KEY (rid, duid),
+	CONSTRAINT receiptdrugs_duid_fkey FOREIGN KEY (duid) REFERENCES drugs(duid),
+	CONSTRAINT receiptdrugs_rid_fkey FOREIGN KEY (rid) REFERENCES receipts(rid)
+);
 
-CREATE
-	TABLE
-		HealthPractitioners(
-			dID int8 PRIMARY KEY,
-			fName VARCHAR(30) NOT NULL,
-			lName VARCHAR(30) NOT NULL,
-			phone VARCHAR(20) NOT NULL,
-			email VARCHAR(30) NOT NULL,
-			specialization VARCHAR(60) NOT NULL
-		);
+CREATE TABLE cs421g24.receipts (
+	rid int4 NOT NULL,
+	did int8 NOT NULL,
+	"date" date NOT NULL,
+	totalprice money NOT NULL,
+	pid int4 NOT NULL,
+	CONSTRAINT receipts_pkey PRIMARY KEY (rid),
+	CONSTRAINT receipts_pid_fkey FOREIGN KEY (did) REFERENCES pharmacists(did),
+	CONSTRAINT receipts_prescriptions_fk FOREIGN KEY (pid) REFERENCES prescriptions(pid)
+);
 
-CREATE
-	TABLE
-		Prescriptions(
-			pID INTEGER PRIMARY KEY,
-			cID INTEGER,
-			dID INTEGER,
-			startDate DATE NOT NULL,
-			endDate DATE NOT NULL,
-			FOREIGN KEY(cID) REFERENCES Clients,
-			FOREIGN KEY(dID) REFERENCES HealthPractitioners
-		);
+CREATE TABLE cs421g24.reimbursed (
+	subid int4 NULL,
+	icid int4 NOT NULL,
+	amount money NOT NULL,
+	"data" date NOT NULL,
+	CONSTRAINT reimbursed_pkey PRIMARY KEY (icid),
+	CONSTRAINT reimbursed_icid_fkey FOREIGN KEY (icid) REFERENCES insuranceclaims(icid),
+	CONSTRAINT reimbursed_subid_fkey FOREIGN KEY (subid) REFERENCES subscriptions(subid)
+);
 
-CREATE
-	TABLE
-		HealthFacilities(
-			hID INTEGER PRIMARY KEY,
-			hName VARCHAR(30) NOT NULL,
-			address TEXT NOT NULL,
-			phone VARCHAR(20) NOT NULL,
-			fType TEXT NOT NULL
-		);
+CREATE TABLE cs421g24.insuranceclaims (
+	icid int4 NOT NULL,
+	"date" date NOT NULL,
+	rid int4 NOT NULL,
+	CONSTRAINT insuranceclaims_pkey PRIMARY KEY (icid),
+	CONSTRAINT insuranceclaims_rid_fkey FOREIGN KEY (rid) REFERENCES receipts(rid)
+);
 
-CREATE
-	TABLE
-		Pharmacists(
-			dID INT8 PRIMARY KEY,
-			FOREIGN KEY(dID) REFERENCES HealthPractitioners
-		);
+CREATE TABLE cs421g24.pharmacists (
+	did int8 NOT NULL,
+	CONSTRAINT pharmacists_pkey PRIMARY KEY (did),
+	CONSTRAINT pharmacists_did_fkey FOREIGN KEY (did) REFERENCES healthpractitioners(did)
+);
 
-CREATE
-	TABLE
-		Receipts(
-			rID INTEGER PRIMARY KEY,
-			dID INTEGER,
-			pID INTEGER,
-			date DATE NOT NULL,
-			totalPrice money NOT NULL,
-			FOREIGN KEY(cID) REFERENCES Clients,
-			FOREIGN KEY(pID) REFERENCES Pharmacists
-		);
+CREATE TABLE cs421g24.covers (
+	planid int4 NOT NULL,
+	duid int4 NOT NULL,
+	CONSTRAINT covers_pkey PRIMARY KEY (planid, duid),
+	CONSTRAINT covers_duid_fkey FOREIGN KEY (duid) REFERENCES drugs(duid),
+	CONSTRAINT covers_planid_fkey FOREIGN KEY (planid) REFERENCES insuranceplans(planid)
+);
 
-CREATE
-	TABLE
-		Drugs(
-			duID INTEGER PRIMARY KEY,
-			dName VARCHAR(200) NOT NULL,
-			manufacturer VARCHAR(200) NOT NULL,
-			price money NOT NULL,
-		);
+CREATE TABLE cs421g24.insuranceplans (
+	planid int4 NOT NULL,
+	coverage text NOT NULL,
+	price money NOT NULL,
+	pname varchar(30) NOT NULL,
+	CONSTRAINT insuranceplans_pkey PRIMARY KEY (planid)
+);
 
-CREATE
-	TABLE
-		Subscriptions(
-			subID INTEGER PRIMARY KEY,
-			cID INTEGER,
-			planID INTEGER,
-			startDate DATE NOT NULL,
-			endDate DATE NOT NULL,
-			FOREIGN KEY(cid) REFERENCES Clients,
-			FOREIGN KEY(planId) REFERENCES InsurancePlans
-		);
+CREATE TABLE cs421g24.subscriptions (
+	subid int4 NOT NULL,
+	cid int4 NULL,
+	planid int4 NULL,
+	startdate date NOT NULL,
+	enddate date NOT NULL,
+	CONSTRAINT subscriptions_pkey PRIMARY KEY (subid),
+	CONSTRAINT subscriptions_cid_fkey FOREIGN KEY (cid) REFERENCES clients(cid),
+	CONSTRAINT subscriptions_planid_fkey FOREIGN KEY (planid) REFERENCES insuranceplans(planid)
+);
 
-CREATE
-	TABLE
-		InsuranceClaims(
-			icID INTEGER PRIMARY KEY,
-			DATE DATE NOT NULL,
-		);
+CREATE TABLE cs421g24.clients (
+	cid int4 NOT NULL,
+	email varchar(30) NOT NULL,
+	phone varchar(20) NOT NULL,
+	address text NOT NULL,
+	account varchar(30) NOT NULL,
+	CONSTRAINT clients_pkey PRIMARY KEY (cid)
+);
 
--- Relationships
+CREATE TABLE cs421g24.drugs (
+	duid int4 NOT NULL,
+	dname varchar(200) NOT NULL,
+	manufacturer varchar(200) NOT NULL,
+	price money NOT NULL,
+	CONSTRAINT drugs_pkey PRIMARY KEY (duid)
+);
 
-CREATE
-	TABLE
-		PrescriptionContents(
-			pID INTEGER,
-			duID INTEGER,
-			quantity INTEGER NOT NULL,
-			refills INTEGER NOT NULL,
-			PRIMARY KEY(
-				pID,
-				duID
-			),
-			FOREIGN KEY(pID) REFERENCES Prescriptions,
-			FOREIGN KEY(duID) REFERENCES Drugs
-		);
+CREATE TABLE cs421g24.healthpractitioners (
+	did int8 NOT NULL,
+	fname varchar(30) NOT NULL,
+	lname varchar(30) NOT NULL,
+	phone varchar(20) NOT NULL,
+	email varchar(60) NOT NULL,
+	specialization varchar(60) NOT NULL,
+	CONSTRAINT healthpractitioner_pkey PRIMARY KEY (did)
+);
 
-CREATE
-	TABLE
-		WorksAt(
-			dID INTEGER,
-			hID INTEGER,
-			PRIMARY KEY(
-				dID,
-				hID
-			),
-			FOREIGN KEY(dID) REFERENCES HealthPractitioners,
-			FOREIGN KEY(hid) REFERENCES HealthFacilities
-		);
+CREATE TABLE cs421g24.prescriptions (
+	pid int4 NOT NULL,
+	cid int4 NULL,
+	did int8 NULL,
+	startdate date NOT NULL,
+	enddate date NOT NULL,
+	CONSTRAINT prescriptions_pkey PRIMARY KEY (pid),
+	CONSTRAINT prescriptions_cid_fkey FOREIGN KEY (cid) REFERENCES clients(cid),
+	CONSTRAINT prescriptions_did_fkey FOREIGN KEY (did) REFERENCES healthpractitioners(did)
+);
 
-CREATE
-	TABLE
-		ReceiptDrugs(
-			rID INTEGER,
-			duID INTEGER,
-			quantity INTEGER NOT NULL,
-			PRIMARY KEY(
-				rID,
-				duID
-			),
-			FOREIGN KEY(rID) REFERENCES Receipts,
-			FOREIGN KEY(duID) REFERENCES Drugs,
-		);
+CREATE TABLE cs421g24.worksat (
+	did int8 NOT NULL,
+	hid int4 NOT NULL,
+	CONSTRAINT worksat_pkey PRIMARY KEY (did, hid),
+	CONSTRAINT worksat_did_fkey FOREIGN KEY (did) REFERENCES healthpractitioners(did),
+	CONSTRAINT worksat_hid_fkey FOREIGN KEY (hid) REFERENCES healthfacilities(hid)
+);
 
-CREATE
-	TABLE
-		Reimbursed(
-			subID INTEGER,
-			icID INTEGER PRIMARY KEY,
-			amount money,
-			DATA DATE NOT NULL,
-			FOREIGN KEY(icID) REFERENCES InsuranceClaims,
-			FOREIGN KEY(subID) REFERENCES Subscriptions
-		);
-
-CREATE
-	TABLE
-		Covers(
-			planID INTEGER,
-			duID INTEGER,
-			PRIMARY KEY(
-				planID,
-				duID
-			),
-			FOREIGN KEY(planID) REFERENCES InsurancePlans,
-			FOREIGN KEY(duID) REFERENCES Drugs
-		);
-
+CREATE TABLE cs421g24.prescriptioncontents (
+	pid int4 NOT NULL,
+	duid int4 NOT NULL,
+	quantity int4 NOT NULL,
+	refills int4 NOT NULL,
+	CONSTRAINT prescriptioncontents_pkey PRIMARY KEY (pid, duid),
+	CONSTRAINT prescriptioncontents_duid_fkey FOREIGN KEY (duid) REFERENCES drugs(duid),
+	CONSTRAINT prescriptioncontents_pid_fkey FOREIGN KEY (pid) REFERENCES prescriptions(pid)
+);
