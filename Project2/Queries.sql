@@ -26,9 +26,9 @@ FROM subscriptions S, individuals I, insuranceplans P
 WHERE S.planid = P.planid AND I.cid = S.cid
 GROUP BY I.gender;
 
-/*  */
+/* Project insurance claims of female clients who have a birthdate in the 20th century */
 SELECT
-	I.birthdate
+	DISTINCT(I.birthdate)
 FROM
 	insuranceclaims IC,
 	receipts R,
@@ -43,16 +43,15 @@ WHERE
 	AND C.cid = Pr.cid
 	AND C.cid IN(
 		SELECT
-			I.cid
+			cid
 		FROM
 			individuals
 		WHERE
-			I.birthdate > '1971-01-01'
+			I.birthdate <'2000-01-01'
+			AND I.gender = 'Male'
 	);
 GROUP BY
 	I.birthdate
 ORDER BY
 	I.birthdate;
---IN( SELECT I.cid
---FROM individuals I
---WHERE I.gender = 'Female' )
+
