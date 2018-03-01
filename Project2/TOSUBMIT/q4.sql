@@ -1,67 +1,67 @@
 SELECT *
-FROM cs421g24.companies
+FROM companies
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.healthfacilities
+FROM healthfacilities
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.individuals
+FROM individuals
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.receiptdrugs
+FROM receiptdrugs
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.receipts
+FROM receipts
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.reimbursed
+FROM reimbursed
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.insuranceclaims
+FROM insuranceclaims
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.pharmacists
+FROM pharmacists
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.covers
+FROM covers
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.insuranceplans
+FROM insuranceplans
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.subscriptions
+FROM subscriptions
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.clients
+FROM clients
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.drugs
+FROM drugs
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.healthpractitioners
+FROM healthpractitioners
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.prescriptions
+FROM prescriptions
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.worksat
+FROM worksat
 LIMIT 10;
 
 SELECT *
-FROM cs421g24.prescriptioncontents
+FROM prescriptioncontents
 LIMIT 10;
