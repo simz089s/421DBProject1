@@ -9,31 +9,7 @@ INSERT
 		'100-030-121213'
 	);
 
-INSERT
-	INTO
-		clients
-	VALUES(
-		0,
-		'name@domain.io',
-		'(420) 3601111',
-		'123 My House',
-		'9999999999'
-	);
+SELECT * FROM clients
 
-SELECT
-	*
-FROM
-	clients
-ORDER BY
-	cid;
-
-INSERT
-	INTO
-		subscriptions
-	VALUES(
-		1,
-		0,
-		1,
-		'2010-01-20',
-		'2015-01-19'
-	);
+/* Question 5 */
+SELECT cid FROM clients EXCEPT SELECT cid FROM subscriptions S WHERE S.enddate > '2018-01-01';  
