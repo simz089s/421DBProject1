@@ -26,32 +26,26 @@ FROM subscriptions S, individuals I, insuranceplans P
 WHERE S.planid = P.planid AND I.cid = S.cid
 GROUP BY I.gender;
 
-/* Project insurance claims of female clients who have a birthdate in the 20th century */
+/* Get individuals who have a birthdate in the 20th century and have been rembursed more than 20$ */
 SELECT
-	DISTINCT(I.birthdate)
+	DISTINCT(I.birthdate),I.cid,Sum(Re.amount::NUMERIC)
 FROM
 	insuranceclaims IC,
 	receipts R,
-	pharmacists Ph,
-	prescriptions Pr,
-	clients C,
-	individuals I
+	individuals I,
+	reimbursed Re,
+	prescriptions P
 WHERE
-	IC.rid = R.rid
-	AND Ph.did = R.did
-	AND Pr.pid = R.pid
-	AND C.cid = Pr.cid
-	AND C.cid IN(
+	IC.rid = R.rid AND Re.icid = IC.icid AND IC.rid = R.rid AND R.pid = P.pid AND P.cid = I.cid
+	AND I.cid IN(
 		SELECT
 			cid
 		FROM
 			individuals
 		WHERE
 			I.birthdate <'2000-01-01'
-			AND I.gender = 'Male'
-	);
-GROUP BY
-	I.birthdate
-ORDER BY
-	I.birthdate;
+	)
+GROUP BY I.cid
+HAVING sum(Re.amount::NUMERIC)>20;
+
 
