@@ -18,10 +18,10 @@ if extra_space:
 else:
     extraspace = ''
 # The list of random values you want to give
-first = 1
-last = 101
+first = 200
+last = 1001
 try:
-    vals = map(lambda x: x+1, list(np.random.permutation(last-1)))
+    vals = map(lambda x: x+first, list(np.random.permutation(last-first)))
 except NameError:
     try:
         vals = [i for i in xrange(first, last)]
@@ -29,10 +29,10 @@ except NameError:
         vals = [i for i in range(first, last)]
 shuffle(vals)
 vals = tuple(vals)
-with open('./healthpractitionersgen_col0.txt', "r") as txtfile:
-    vals = []
-    for line in txtfile:
-        vals.append(line.strip())
+# with open('./healthpractitionersgen_col0.txt', "r") as txtfile:
+#     vals = []
+#     for line in txtfile:
+#         vals.append(line.strip())
 ################################################################################
 # What to surround value with e.g. nothing for INTEGER and ' for VARCHAR and others
 # The column (index) to replace
@@ -52,11 +52,17 @@ sqlfile = open(sqlfilepath, mode="r")
 newsqltext = []
 i = 0
 for line in sqlfile:
-    if line.startswith('VALUES( '):
-        # line.replace(" ", "")
-        newlinearr = line[8:-3].split(',')
-        newlinearr[col] = ' ' + around + str(vals[i]) + around
-        newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + extraspace + ');\n'
+    # if line.startswith('VALUES( '):
+    #     # line.replace(" ", "")
+    #     newlinearr = line[8:-3].split(',')
+    #     newlinearr[col] = ' ' + around + str(vals[i]) + around
+    #     newline = 'VALUES(' + ('' if col is 0 else ' ') + ",".join(newlinearr) + extraspace + ');\n'
+    #     newsqltext.append(newline)
+    #     i+=1
+    if line.startswith("SET coverage = '"):
+        newlinearr = line[15:].split(',')
+        newlinearr[col] = ' price = ' + str(vals[i])
+        newline = "SET coverage = " + ",".join(newlinearr)
         newsqltext.append(newline)
         i+=1
     else:

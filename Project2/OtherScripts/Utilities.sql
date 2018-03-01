@@ -24,10 +24,10 @@ ORDER BY
 SELECT
 	*
 FROM
-	subscriptions
+	individuals I
 WHERE
-	startdate > enddate
---ORDER BY
+	age(current_date, I.birthdate) > '18 years';
+ORDER BY
 	;
 
 -- Delete table rows
@@ -49,14 +49,6 @@ ALTER TABLE
 	cs421g24.prescriptions ALTER COLUMN did TYPE INT8
 		USING did::INT8;
 
--- Alter table again for Q8
-ALTER TABLE
-	individuals ADD CONSTRAINT individuals_cid_check CHECK(
-		cid > 0
-	);
-
-INSERT INTO
-	individuals
-VALUES(0, 'a','b','2000-01-01','Other');
------------------------------------------------------------------------
+-- Describe table
+EXEC SQL DESCRIBE TABLE clients;
 
