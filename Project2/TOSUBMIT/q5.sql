@@ -5,14 +5,17 @@ SELECT cid
 FROM clients
 EXCEPT SELECT cid
 FROM subscriptions S
-WHERE S.enddate > '2018-01-01';
+WHERE S.enddate > '2018-01-01'
+LIMIT 50;
 
 /* Project pid, cid, and name of female clients who have prescriptions, ordered by pid */
 SELECT pid, I.cid, fname, lname
 FROM prescriptions P, individuals I
 WHERE P.cid = I.cid AND I.gender = 'Female'
 --GROUP BY gender
-ORDER BY pid;
+ORDER BY pid
+LIMIT 50;
+
 
 /*Shows the amount of money spent by both sexes*/
 SELECT I.gender,AVG(R.totalprice::NUMERIC) 
@@ -20,11 +23,13 @@ FROM receipts R, prescriptions P, individuals I
 WHERE R.pid = P.Pid AND P.cid = I.cid 
 GROUP BY I.gender;
 
+
 /*Shows the average money spent on plans by clients based on gender*/
 SELECT I.gender,AVG(P.price::NUMERIC) 
 FROM subscriptions S, individuals I, insuranceplans P
 WHERE S.planid = P.planid AND I.cid = S.cid
 GROUP BY I.gender;
+
 
 /* Get adult individuals who have been reimbursed more than 20$ */
 SELECT
@@ -54,5 +59,7 @@ WHERE
 GROUP BY
 	I.cid
 HAVING
-	SUM( Re.amount::NUMERIC )> 20;
+	SUM( Re.amount::NUMERIC )> 20
+LIMIT 50;
+
 
