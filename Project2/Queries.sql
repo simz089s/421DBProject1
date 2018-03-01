@@ -28,7 +28,9 @@ GROUP BY I.gender;
 
 /* Get individuals who have a birthdate in the 20th century and have been rembursed more than 20$ */
 SELECT
-	DISTINCT(I.birthdate),I.cid,Sum(Re.amount::NUMERIC)
+	DISTINCT(I.birthdate),
+	I.cid,
+	SUM( Re.amount::NUMERIC )
 FROM
 	insuranceclaims IC,
 	receipts R,
@@ -36,16 +38,21 @@ FROM
 	reimbursed Re,
 	prescriptions P
 WHERE
-	IC.rid = R.rid AND Re.icid = IC.icid AND IC.rid = R.rid AND R.pid = P.pid AND P.cid = I.cid
+	IC.rid = R.rid
+	AND Re.icid = IC.icid
+	AND IC.rid = R.rid
+	AND R.pid = P.pid
+	AND P.cid = I.cid
 	AND I.cid IN(
 		SELECT
 			cid
 		FROM
 			individuals
 		WHERE
-			I.birthdate <'2000-01-01'
+			I.birthdate < '2000-01-01'
 	)
-GROUP BY I.cid
-HAVING sum(Re.amount::NUMERIC)>20;
-
+GROUP BY
+	I.cid
+HAVING
+	SUM( Re.amount::NUMERIC )> 20;
 
