@@ -1,5 +1,0 @@
-Updated Rows	1
-Query	INSERT INTO clients Values (2,'j.dupond@mail.com','4389352104','apt 5 rue des fleurs H16 2l8 Montreal','100-030-121213')
-Finish time	Sun Feb 25 14:09:59 EST 2018
-
-2	j.dupond@mail.com	4389352104	apt 5 rue des fleurs H16 2l8 Montreal	100-030-121213
