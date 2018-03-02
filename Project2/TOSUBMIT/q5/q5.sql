@@ -8,16 +8,16 @@ FROM subscriptions S
 WHERE S.enddate > '2018-01-01'
 LIMIT 50;
 
-/* Project pid, cid, and name of female clients who have prescriptions, ordered by pid */
-SELECT pid, I.cid, fname, lname
-FROM prescriptions P, individuals I
-WHERE P.cid = I.cid AND I.gender = 'Female'
---GROUP BY gender
-ORDER BY pid
+/* See how many of each drug each female individual was prescribed */
+SELECT Distinct D.duid, count(*)
+FROM prescriptions P, individuals I, prescriptioncontents Pc, drugs D
+WHERE P.cid = I.cid AND I.gender = 'Female' AND Pc.pid = P.pid
+GROUP BY D.duid
+ORDER BY D.duid
 LIMIT 50;
 
 
-/*Shows the amount of money spent by both sexes*/
+/*Shows the average money spent by both sexes on our insurance plans*/
 SELECT I.gender,AVG(R.totalprice::NUMERIC) 
 FROM receipts R, prescriptions P, individuals I 
 WHERE R.pid = P.Pid AND P.cid = I.cid 
