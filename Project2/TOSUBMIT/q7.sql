@@ -14,3 +14,5 @@ CREATE
 		AND p.cid = c.cid;
 
 SELECT * FROM ReceiptClient;
+
+

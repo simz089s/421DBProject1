@@ -61,7 +61,7 @@ CREATE TABLE individuals (
 CREATE TABLE pharmacists (
 	did int8 NOT NULL,
 	CONSTRAINT pharmacists_pkey PRIMARY KEY (did),
-	CONSTRAINT pharmacists_did_fkey FOREIGN KEY (did) REFERENCES healthpractitioners(did)
+	CONSTRAINT superlock FOREIGN KEY (did) REFERENCES healthpractitioners(did) ON DELETE CASCADE
 );
 
 CREATE TABLE prescriptions (
@@ -103,7 +103,7 @@ CREATE TABLE insuranceclaims (
 	CONSTRAINT insuranceclaims_rid_fkey FOREIGN KEY (rid) REFERENCES receipts(rid)
 );
 
-CREATE TABLE cs421g24.subscriptions (
+CREATE TABLE subscriptions (
 	cid int4 NULL,
 	planid int4 NULL,
 	startdate date NOT NULL,

@@ -8,11 +8,4 @@
 	</buildSpec>
 	<natures>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>Scripts/receiptdrugsgen.sql</name>
-			<type>1</type>
-			<location>//Users/AbhijayGupta/Desktop/Winter_2018_Comp_421_Database_Systems/Project/421DBProject1/Project2/receiptdrugsgen.sql</location>
-		</link>
-	</linkedResources>
 </projectDescription>
