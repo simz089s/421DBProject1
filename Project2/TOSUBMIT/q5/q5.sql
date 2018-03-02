@@ -72,11 +72,26 @@ LIMIT 50;
  */
 
 
-/*Shows the average money spent by both sexes on our insurance plans*/
-SELECT I.gender,AVG(R.totalprice::NUMERIC) 
-FROM receipts R, prescriptions P, individuals I 
-WHERE R.pid = P.Pid AND P.cid = I.cid 
-GROUP BY I.gender;
+/*Projects infos on each drug in order sorted by price and refills (and manufacturer and quantity)*/
+SELECT
+	D.duid,
+	D.dname,
+	D.manufacturer,
+	D.price,
+	PC.quantity,
+	PC.refills
+FROM
+	drugs D,
+	prescriptioncontents PC
+WHERE
+	PC.refills > 0
+	AND D.duid = PC.duid
+ORDER BY
+	D.dname,
+	D.price,
+	PC.refills,
+	D.manufacturer,
+	PC.quantity;
 
 
 /*Shows the average money spent on plans by clients based on gender*/
