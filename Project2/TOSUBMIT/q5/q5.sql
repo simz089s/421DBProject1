@@ -8,13 +8,68 @@ FROM subscriptions S
 WHERE S.enddate > '2018-01-01'
 LIMIT 50;
 
-/* See how many of each drug each female individual was prescribed */
-SELECT Distinct D.duid, count(*)
+/* Show how much each drug appears in prescription for the female gender*/
+SELECT PC.duid, sum(Pc.quantity)
 FROM prescriptions P, individuals I, prescriptioncontents Pc, drugs D
-WHERE P.cid = I.cid AND I.gender = 'Female' AND Pc.pid = P.pid
-GROUP BY D.duid
-ORDER BY D.duid
+WHERE P.cid = I.cid AND I.gender = 'Female' AND Pc.pid = P.pid AND D.duid=Pc.duid
+GROUP BY PC.duid
+ORDER BY PC.duid
 LIMIT 50;
+
+/*
+ * duid |sum |
+-----|----|
+3    |3   |
+4    |6   |
+5    |1   |
+6    |3   |
+7    |4   |
+8    |4   |
+10   |4   |
+11   |2   |
+13   |7   |
+14   |5   |
+15   |2   |
+17   |5   |
+19   |3   |
+21   |5   |
+22   |5   |
+24   |3   |
+25   |6   |
+26   |1   |
+27   |3   |
+28   |10  |
+29   |3   |
+33   |1   |
+34   |1   |
+35   |5   |
+36   |3   |
+37   |1   |
+38   |4   |
+39   |3   |
+40   |7   |
+42   |1   |
+44   |1   |
+45   |7   |
+46   |3   |
+47   |7   |
+49   |1   |
+50   |1   |
+51   |1   |
+52   |4   |
+54   |4   |
+57   |4   |
+58   |4   |
+59   |4   |
+60   |2   |
+62   |1   |
+63   |4   |
+64   |8   |
+65   |5   |
+66   |3   |
+68   |5   |
+69   |4   |
+ */
 
 
 /*Shows the average money spent by both sexes on our insurance plans*/
