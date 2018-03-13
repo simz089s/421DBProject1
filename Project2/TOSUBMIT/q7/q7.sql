@@ -1,8 +1,9 @@
-/* Shows clients linked to receipts */
+/* Shows clients linked to receipts as well as the amount they paid */
 CREATE
 	VIEW ReceiptClientView(
 		cid,
-		rid
+		rid,
+		totalprice
 	) AS SELECT
 		c.cid,
 		r.rid

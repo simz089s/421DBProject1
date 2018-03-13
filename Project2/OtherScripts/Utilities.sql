@@ -23,12 +23,25 @@ ORDER BY
 -- Just some normal projection
 SELECT
 	*
+FROM (SELECT * FROM companies) C;
+
+SELECT
+	D.duid,
+	D.dname,
+	D.manufacturer,
+	D.price,
+	PC.quantity,
+	PC.refills
 FROM
-	individuals I
+	drugs D,
+	prescriptioncontents PC
 WHERE
-	age(current_date, I.birthdate) > '18 years';
+	PC.refills > 0
 ORDER BY
-	;
+	PC.refills,
+	D.manufacturer,
+	D.dname,
+	D.price;
 
 -- Delete table rows
 -- Please be careful and passively sanitize (neutralize) these kind of SQL statements when you aren't using them
