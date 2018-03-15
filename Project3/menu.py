@@ -8,7 +8,7 @@ Database tool menu
 '''
 from __future__ import print_function
 import os, sys
-import time
+import psycopg2
 try:
     import Tkinter as tk
     try:
@@ -35,6 +35,11 @@ def main(argc, args):
     menu_frame.pack()
     btn = tk.Button(menu_frame, text="hi", height=5, width=10)
     btn.pack()
+
+    password = ''
+    conn = psycopg2.connect("dbname='cs421', user='cs421g24', password='"+password+"', host='comp421.cs.mcgill.ca'")
+    cursor = conn.cursor()
+
     root.mainloop()
     return 0
 
