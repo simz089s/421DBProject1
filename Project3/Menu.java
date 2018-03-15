@@ -13,7 +13,15 @@ import java.sql.* ;
 //import java.sql.Connection;
 //import java.sql.SQLException;
 
-class Menu {
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+class Menu extends Application {
     public static void main(String[] args) throws SQLException {
 		// Unique table names. Either the user supplies a unique identifier as a command line argument, or the program makes one up.
 		String tableName = "";
@@ -135,6 +143,26 @@ class Menu {
 		// Finally but importantly close the statement and connection
 		statement.close();
 		con.close();
+    }
+    
+    @Override
+    public void start(Stage pPrimaryStage) throws Exception {
+        Button btn = new Button("Obliterate database");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent pEvent) {
+                btn.setText("Database has been annihilated");
+            }
+        });
+        
+        StackPane root = new StackPane();
+        root.getChildren().add(btn);
+        
+        Scene scene = new Scene(root, 300, 250);
+        
+        pPrimaryStage.setTitle("Database menu for cs421");
+        pPrimaryStage.setScene(scene);
+        pPrimaryStage.show();
     }
 }
 
