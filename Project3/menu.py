@@ -17,12 +17,12 @@ frame = Frame(root, bg='pink', width=500, height=500)
 class StartPage(Frame):
     def __init__(self, parent, controller):
         Label(self,text="start page",font=LARGE_FONT).pacK()
-        
+
     global root
     root.destroy()
 def main(argc, args):
     #conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=',./susiajtromb124', host='comp421.cs.mcgill.ca')
-    conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=',./susiajtromb124', host='comp421.cs.mcgill.ca')
+    conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=getpass.getpass(prompt='Password: '), host='comp421.cs.mcgill.ca')
     cursor = conn.cursor()
     frame.grid()
     quitbutton = Button(frame,text="Quit",command=quit)
