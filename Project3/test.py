@@ -1,6 +1,16 @@
+import getpass
+import os, sys
+import psycopg2
+
 import tkinter as tk
 LARGE_FONT = ("Verdana",12)
-a = 1
+##################################################
+# FOR TESTING ONLY REMOVE HARDCODED PASSWORD AFTER
+# getpass.getpass(prompt='Password: ')
+##################################################
+conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=",./susiajtromb124", host='comp421.cs.mcgill.ca')
+cursor = conn.cursor()
+
 class Insurance(tk.Tk):
     def __init__(self,*args,**kwargs):
         tk.Tk.__init__(self,*args,**kwargs)
@@ -84,12 +94,12 @@ class Option5(tk.Frame):
         label.pack(pady=10,padx=10)
 
 app = Insurance()
-def main():
+def main(argc, args):
     app.mainloop()
 
 def quit():
     app.destroy()
 
-if __name__ == "__main__":
-    main()
 
+if __name__ == "__main__":
+    sys.exit(main(len(sys.argv), sys.argv))
