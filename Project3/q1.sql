@@ -1,11 +1,11 @@
-/* Function that remburses all clients that have not yet been rembursed
- * Provided that each rembursments made does not exceed maxval
- * and that the receipt (rda) and claim date (ida) where done before a dates
- * Returns the total amount of money rembursed
+/* Function that reimburses all clients that have not yet been reimbursed
+ * Provided that each reimbursments made does not exceed maxval
+ * and that the receipt (rda) and claim date (ida) were done before these dates
+ * Returns the total amount of money reimbursed
  */
-CREATE OR REPLACE FUNCTION remburse(maxval MONEY, rda DATE, ida DATE) RETURNS MONEY AS $$
+CREATE OR REPLACE FUNCTION reimburse(maxval MONEY, rda DATE, ida DATE) RETURNS MONEY AS $$
 DECLARE	
-	--Get the table containing for all valid rembursments except the re_amount
+	--Get the table containing for all valid reimbursments except the re_amount
 	claim_cur CURSOR FOR SELECT I.icid,Re.totalprice,P.cid,Re."date" FROM insuranceclaims I, receipts Re
 	INNER JOIN prescriptions P ON Re.pid=P.pid WHERE NOT EXISTS(SELECT FROM reimbursed R WHERE R.icid = I.icid)
 	AND I."date" < ida::date AND I.rid = Re.rid AND Re."date" < rda::date;
@@ -33,6 +33,5 @@ BEGIN
 	RETURN counter;
 END;
 $$ LANGUAGE plpgsql;
-
 
 SELECT remburse('$100','3000-02-03','3000-02-03');
