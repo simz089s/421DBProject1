@@ -21,8 +21,12 @@ class StartPage(Frame):
     global root
     root.destroy()
 def main(argc, args):
-    #conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=',./susiajtromb124', host='comp421.cs.mcgill.ca')
-    conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=getpass.getpass(prompt='Password: '), host='comp421.cs.mcgill.ca')
+    ##################################################
+    # FOR TESTING ONLY REMOVE HARDCODED PASSWORD AFTER
+    pswd = ',./susiajtromb124'
+    # psswd = getpass.getpass(prompt='Password: ')
+    ##################################################
+    conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=pswd, host='comp421.cs.mcgill.ca')
     cursor = conn.cursor()
     frame.grid()
     quitbutton = Button(frame,text="Quit",command=quit)
