@@ -59,16 +59,16 @@ class StartPage(tk.Frame):
         option = tk.IntVar()
         option1 = tk.Radiobutton(self,text='Option1',value=1,variable=option)
         option1.pack()
-        option2 = tk.Radiobutton(self,text='Option2',value=2,variable=option)
-        option2.pack()
+        option2 = tk.Radiobutton(self,text='Get client receipts',value=2,variable=option)
+        option2.pack(anchor="nw")
         option3 = tk.Radiobutton(self,text='Option3',value=3,variable=option)
-        option3.pack()
+        option3.pack(anchor="nw")
         option4 = tk.Radiobutton(self,text='Option4',value=4,variable=option)
-        option4.pack()
+        option4.pack(anchor="nw")
         option5 = tk.Radiobutton(self,text='Option5',value=5,variable=option)
-        option5.pack()
+        option5.pack(anchor="nw")
 
-        select_bt = tk.Button(self,text="Next",command=lambda: controller.show_frame(option.get()))
+        select_bt = tk.Button(self,text="Select",command=lambda: controller.show_frame(option.get()))
         select_bt.pack()
         quit_bt = tk.Button(self,text="Quit",command=quit)
         quit_bt.pack()
@@ -83,10 +83,31 @@ class Option1(tk.Frame):
         label.pack(pady=10,padx=10)
 
 class Option2(tk.Frame):
+    '''
+    Fetch client receipts
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self,text="You choose option 2",font=LARGE_FONT)
+        label = tk.Label(self,text="Get client receipts")
         label.pack(pady=10,padx=10)
+
+        # email = tk.Label(self,text='Email:')
+        # phone = tk.Label(self,text='Phone:')
+        # address = tk.Label(self,text='Address:')
+        # account = tk.Label(self,text='Account:')
+        # email.pack()
+        # phone.pack()
+        # address.pack()
+        # account.pack()
+        cid_label = tk.Label(self,text='ID number')
+        cid_entry = tk.Entry(self)
+        cid_label.pack()
+        cid_entry.pack()
+        cid = cid_entry.get()
+
+        cursor.execute("SELECT * FROM clients C, prescriptions P, receipts R WHERE C.cid = P.cid AND P.pid = R.pid AND C.cid = %s", (cid))
+        print(cursor.fetchall())
+        conn.commit()
 
 class Option3(tk.Frame):
     def __init__(self, parent, controller):
@@ -110,11 +131,22 @@ class Option5(tk.Frame):
 APP = Insurance()
 
 def quit():
+    cursor.close()
+    conn.close()
     APP.destroy()
+    return 0
 
 def main(argc, args):
     APP.mainloop()
-
+    cursor.close()
+    conn.close()
+    return 0
 
 if __name__ == "__main__":
-    sys.exit(main(len(sys.argv), sys.argv))
+    exit_code = main(len(sys.argv), sys.argv)
+    cursor.close()
+    conn.close()
+    sys.exit(exit_code)
+
+cursor.close()
+conn.close()
