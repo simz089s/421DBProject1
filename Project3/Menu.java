@@ -21,7 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-class Menu extends Application {
+class Program extends Application {
     public static void main(String[] args) throws SQLException {
 		// Unique table names. Either the user supplies a unique identifier as a command line argument, or the program makes one up.
 		String tableName = "";
