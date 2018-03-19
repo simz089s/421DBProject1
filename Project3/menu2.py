@@ -64,7 +64,7 @@ class StartPage(tk.Frame):
         option2.pack(anchor="nw")
         option3 = tk.Radiobutton(self,text='Update health practictioner info',value=3,variable=option)
         option3.pack(anchor="nw")
-        option4 = tk.Radiobutton(self,text='Option4',value=4,variable=option)
+        option4 = tk.Radiobutton(self,text='Reward Plan',value=4,variable=option)
         option4.pack(anchor="nw")
         option5 = tk.Radiobutton(self,text='Option5',value=5,variable=option)
         option5.pack(anchor="nw")
@@ -172,6 +172,7 @@ class Option3(tk.Frame):
         tk.Frame.__init__(self,parent)
         label = tk.Label(self,text="Update health practictioner info",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
+<<<<<<< HEAD
 
         self.did_label = tk.Label(self,text='ID number')
         self.did_entry = tk.Entry(self)
@@ -212,6 +213,28 @@ class Option3(tk.Frame):
         quit_button.pack()
 
     def updateinfo(self):
+=======
+        CID = tk.Label(self,text="CID")
+        CID.pack()
+        self.e1 = tk.Entry(self)
+        self.e1.pack()
+        SUBID = tk.Label(self,text="SUBID")
+        SUBID.pack()
+        self.e2= tk.Entry(self)
+        self.e2.pack()
+        submit_btn = tk.Button(self,text="Submit",command=self.addclient)
+        submit_btn.pack()
+        self.message = tk.Label(self,text='')
+        goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
+        goBack.pack()
+        goBack.pack()
+        quit_bt = tk.Button(self,text="Quit",command=quit)
+        self.message.pack()
+        quit_bt.pack()
+    def addclient(self):
+        global cursor
+        argtuple = (self.e1.get(),self.e2.get())
+>>>>>>> 0a1f9f3d8069742630d2eed6f3ff5ec7b6828eac
         try:
             did = int(self.did_entry.get())
             entries = {
@@ -243,10 +266,64 @@ WHERE did = %s''', inputs)
             self.specialization_entry.delete(0, tk.END)
 
 class Option4(tk.Frame):
+    '''
+        Reward Plan allowing anyone that spent above a certain amount
+        in the span of a year on subscription plans
+        to subscribe as a trial for a month to a plan chosen by the user
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self,text="You choose option 4",font=LARGE_FONT)
+        label = tk.Label(self,text="Reward Plan",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
+        PLANID = tk.Label(self,text="PlanID")
+        PLANID.pack()
+        self.e1 = tk.Entry(self)
+        self.e1.pack()
+        spendlimit = tk.Label(self,text="Spend limit")
+        spendlimit.pack()
+        self.e2= tk.Entry(self)
+        self.e2.pack()
+        submit_btn = tk.Button(self,text="Submit",command=self.subscribe)
+        submit_btn.pack()
+        self.message = tk.Label(self,text='')
+        goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
+        self.lb = tk.Listbox(self,height=5)
+        quit_bt = tk.Button(self,text="Quit",command=quit)
+        self.message.pack()
+        self.lb.pack()
+        goBack.pack()
+        quit_bt.pack()
+
+    def subscribe(self):
+        global cursor
+        try:
+            argtuple = (int(self.e1.get()),int(self.e2.get()))
+            for e in argtuple:
+                if e=='':
+                    raise Exception("All fields must have a value")
+            cursor.execute('''SELECT S.cid,sum(P.price) FROM subscriptions S, insuranceplans P WHERE P.planid=S.planid AND age(
+				CURRENT_DATE,
+				S.enddate
+			)< '1 years' AND NOT EXISTS (SELECT FROM subscriptions S1 WHERE S1.planid=%s AND S.cid = S1.cid)
+			GROUP BY S.cid
+			HAVING sum(P.price)>%s::money''',argtuple)
+            data=cursor.fetchall()
+            for row in data:
+                cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
+            conn.commit()
+            fetch_msg = pdDataFrame(data, columns=('New Subscribed Clients','q'))
+            fetch_msg = fetch_msg.drop('q',axis=1)
+            self.message.config(text="Clients Added:")
+            self.lb.delete(0, tk.END)
+            for row in data:
+                self.lb.insert(0,row[0])
+        except Exception as e:
+            self.lb.delete(0, tk.END)
+            self.message.config(text=str(e))
+
+        finally:
+            self.e1.delete(0, tk.END)
+            self.e2.delete(0, tk.END)
 
 class Option5(tk.Frame):
     def __init__(self, parent, controller):
