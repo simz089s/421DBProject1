@@ -58,7 +58,7 @@ class StartPage(tk.Frame):
 
         option = tk.IntVar()
         option1 = tk.Radiobutton(self,text='Add Client',value=1,variable=option)
-        option1.pack()
+        option1.pack(anchor="nw")
         option2 = tk.Radiobutton(self,text='Get client receipts',value=2,variable=option)
         option2.pack(anchor="nw")
         option3 = tk.Radiobutton(self,text='Option3',value=3,variable=option)
@@ -77,6 +77,9 @@ class StartPage(tk.Frame):
         option1.select()
 
 class Option1(tk.Frame):
+    '''
+        Add a client to the database
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
         label = tk.Label(self,text="Add Client",font=LARGE_FONT)
@@ -124,7 +127,6 @@ class Option1(tk.Frame):
             self.e2.delete(0, tk.END)
             self.e3.delete(0, tk.END)
             self.e4.delete(0, tk.END)
-            self.update()
 
 class Option2(tk.Frame):
     '''
@@ -149,15 +151,47 @@ class Option2(tk.Frame):
         cid_entry.pack()
         cid = cid_entry.get()
 
-        cursor.execute("SELECT * FROM clients C, prescriptions P, receipts R WHERE C.cid = P.cid AND P.pid = R.pid AND C.cid = %s", (cid))
-        print(cursor.fetchall())
-        conn.commit()
+        #cursor.execute("SELECT * FROM clients C, prescriptions P, receipts R WHERE C.cid = P.cid AND P.pid = R.pid AND C.cid = %s", (cid))
+        #print(cursor.fetchall())
+        #conn.commit()
 
 class Option3(tk.Frame):
+    '''
+        Add client
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self,text="You choose option 3",font=LARGE_FONT)
+        label = tk.Label(self,text="Pric",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
+        CID = tk.Label(self,text="CID")
+        CID.pack()
+        self.e1 = tk.Entry(self)
+        self.e1.pack()
+        SUBID = tk.Label(self,text="SUBID")
+        SUBID.pack()
+        self.e2= tk.Entry(self)
+        self.e2.pack()
+        submit_btn = tk.Button(self,text="Submit",command=self.addclient)
+        submit_btn.pack()
+        self.message = tk.Label(self,text='')
+        goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
+        goBack.pack()
+        goBack.pack()
+        quit_bt = tk.Button(self,text="Quit",command=quit)
+        self.message.pack()
+        quit_bt.pack()
+    def addclient(self):
+        global cursor
+        argtuple = (self.e1.get(),self.e2.get()
+        try:
+            x=5
+        except Exception as e:
+            self.message.config(text=str(e))
+
+        finally:
+            self.e1.delete(0, tk.END)
+            self.e2.delete(0, tk.END)
+
 
 class Option4(tk.Frame):
     def __init__(self, parent, controller):
