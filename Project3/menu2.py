@@ -245,9 +245,9 @@ class Option4(tk.Frame):
 			GROUP BY S.cid
 			HAVING sum(P.price)>%s::money''',argtuple)
             data=cursor.fetchall()
-            #for row in data:
-                #cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
-            #conn.commit()
+            for row in data:
+                cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
+            conn.commit()
             fetch_msg = pdDataFrame(data, columns=('New Subscribed Clients','q'))
             fetch_msg = fetch_msg.drop('q',axis=1)
             self.message.config(text="Clients Added:")
