@@ -62,7 +62,7 @@ class StartPage(tk.Frame):
         option1.pack(anchor="nw")
         option2 = tk.Radiobutton(self,text='Get client receipts',value=2,variable=option)
         option2.pack(anchor="nw")
-        option3 = tk.Radiobutton(self,text='Option3',value=3,variable=option)
+        option3 = tk.Radiobutton(self,text='Update health practictioner info',value=3,variable=option)
         option3.pack(anchor="nw")
         option4 = tk.Radiobutton(self,text='Option4',value=4,variable=option)
         option4.pack(anchor="nw")
@@ -166,41 +166,81 @@ class Option2(tk.Frame):
 
 class Option3(tk.Frame):
     '''
-        Add client
+    Update health practictioner info
     '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self,text="Pric",font=LARGE_FONT)
+        label = tk.Label(self,text="Update health practictioner info",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        CID = tk.Label(self,text="CID")
-        CID.pack()
-        self.e1 = tk.Entry(self)
-        self.e1.pack()
-        SUBID = tk.Label(self,text="SUBID")
-        SUBID.pack()
-        self.e2= tk.Entry(self)
-        self.e2.pack()
-        submit_btn = tk.Button(self,text="Submit",command=self.addclient)
-        submit_btn.pack()
-        self.message = tk.Label(self,text='')
-        goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
-        goBack.pack()
-        goBack.pack()
-        quit_bt = tk.Button(self,text="Quit",command=quit)
-        self.message.pack()
-        quit_bt.pack()
-    def addclient(self):
-        global cursor
-        argtuple = (self.e1.get(),self.e2.get()
+
+        self.did_label = tk.Label(self,text='ID number')
+        self.did_entry = tk.Entry(self)
+        self.fname_label = tk.Label(self,text='First name')
+        self.fname_entry = tk.Entry(self)
+        self.lname_label = tk.Label(self,text='Last name')
+        self.lname_entry = tk.Entry(self)
+        self.phone_label = tk.Label(self,text='Phone number')
+        self.phone_entry = tk.Entry(self)
+        self.email_label = tk.Label(self,text='Email')
+        self.email_entry = tk.Entry(self)
+        self.specialization_label = tk.Label(self,text='Specialization')
+        self.specialization_entry = tk.Entry(self)
+
+        self.did_label.pack()
+        self.did_entry.pack()
+        self.fname_label.pack()
+        self.fname_entry.pack()
+        self.lname_label.pack()
+        self.lname_entry.pack()
+        self.phone_label.pack()
+        self.phone_entry.pack()
+        self.email_label.pack()
+        self.email_entry.pack()
+        self.specialization_label.pack()
+        self.specialization_entry.pack()
+
+        self.update_button = tk.Button(self,text='Update',command=self.updateinfo)
+        self.feedback = tk.Label(self)
+
+        self.update_button.pack()
+        self.feedback.pack()
+
+        back_button = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
+        quit_button = tk.Button(self,text="Quit",command=quit)
+
+        back_button.pack()
+        quit_button.pack()
+
+    def updateinfo(self):
         try:
-            x=5
+            did = int(self.did_entry.get())
+            entries = {
+                'fname' : self.fname_entry.get(),
+                'lname' : self.lname_entry.get(),
+                'phone' : self.phone_entry.get(),
+                'email' : self.email_entry.get(),
+                'specialization' : self.specialization_entry.get()
+            }
+
+            inputs = ["'"+entry+"'" if i==len(entries)-1 or all([True if x == '' else False for x in entries.values()[i:]]) else "'"+entry+"'"+',' for i,entry in enumerate(entries.values())]
+            inputs = tuple(['' if inputs[i] in ('',',',"''","'',") else entryname+'='+inputs[i] for i,entryname in enumerate(entries.keys())] + [did])
+            print(inputs)
+
+            cursor.execute('''UPDATE healthpractitioners
+SET %s
+WHERE did = %s''', inputs)
+            # results = cursor.fetchall()
+            # fetch_msg = pdDataFrame(results, columns=('Receipt id', 'Total price')).to_string(index=False)
+            # self.fetch_label.config(text=str(fetch_msg))
+            # conn.commit()
         except Exception as e:
-            self.message.config(text=str(e))
-
+            self.feedback.config(text=str(e))
         finally:
-            self.e1.delete(0, tk.END)
-            self.e2.delete(0, tk.END)
-
+            self.fname_entry.delete(0, tk.END)
+            self.lname_entry.delete(0, tk.END)
+            self.phone_entry.delete(0, tk.END)
+            self.email_entry.delete(0, tk.END)
+            self.specialization_entry.delete(0, tk.END)
 
 class Option4(tk.Frame):
     def __init__(self, parent, controller):
