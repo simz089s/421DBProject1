@@ -172,7 +172,6 @@ class Option3(tk.Frame):
         tk.Frame.__init__(self,parent)
         label = tk.Label(self,text="Update health practictioner info",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-<<<<<<< HEAD
 
         self.did_label = tk.Label(self,text='ID number')
         self.did_entry = tk.Entry(self)
@@ -213,28 +212,6 @@ class Option3(tk.Frame):
         quit_button.pack()
 
     def updateinfo(self):
-=======
-        CID = tk.Label(self,text="CID")
-        CID.pack()
-        self.e1 = tk.Entry(self)
-        self.e1.pack()
-        SUBID = tk.Label(self,text="SUBID")
-        SUBID.pack()
-        self.e2= tk.Entry(self)
-        self.e2.pack()
-        submit_btn = tk.Button(self,text="Submit",command=self.addclient)
-        submit_btn.pack()
-        self.message = tk.Label(self,text='')
-        goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
-        goBack.pack()
-        goBack.pack()
-        quit_bt = tk.Button(self,text="Quit",command=quit)
-        self.message.pack()
-        quit_bt.pack()
-    def addclient(self):
-        global cursor
-        argtuple = (self.e1.get(),self.e2.get())
->>>>>>> 0a1f9f3d8069742630d2eed6f3ff5ec7b6828eac
         try:
             did = int(self.did_entry.get())
             entries = {
