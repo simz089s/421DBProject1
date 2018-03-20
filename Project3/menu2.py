@@ -173,8 +173,6 @@ class Option3(tk.Frame):
         label = tk.Label(self,text="Update health practictioner info",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
 
-        self.did_label = tk.Label(self,text='ID number')
-        self.did_entry = tk.Entry(self)
         self.fname_label = tk.Label(self,text='First name')
         self.fname_entry = tk.Entry(self)
         self.lname_label = tk.Label(self,text='Last name')
@@ -186,16 +184,14 @@ class Option3(tk.Frame):
         self.specialization_label = tk.Label(self,text='Specialization')
         self.specialization_entry = tk.Entry(self)
 
-        self.did_label.pack()
-        self.did_entry.pack()
+        self.email_label.pack()
+        self.email_entry.pack()
         self.fname_label.pack()
         self.fname_entry.pack()
         self.lname_label.pack()
         self.lname_entry.pack()
         self.phone_label.pack()
         self.phone_entry.pack()
-        self.email_label.pack()
-        self.email_entry.pack()
         self.specialization_label.pack()
         self.specialization_entry.pack()
 
@@ -213,26 +209,39 @@ class Option3(tk.Frame):
 
     def updateinfo(self):
         try:
-            did = int(self.did_entry.get())
-            entries = {
-                'fname' : self.fname_entry.get(),
-                'lname' : self.lname_entry.get(),
-                'phone' : self.phone_entry.get(),
-                'email' : self.email_entry.get(),
-                'specialization' : self.specialization_entry.get()
-            }
+            email = self.email_entry.get()
+            entries = [
+                self.fname_entry.get(),
+                self.lname_entry.get(),
+                self.phone_entry.get(),
+                self.specialization_entry.get()
+            ]
+            if email=='':
+                raise Exception("e-mail field empty")
 
-            inputs = ["'"+entry+"'" if i==len(entries)-1 or all([True if x == '' else False for x in entries.values()[i:]]) else "'"+entry+"'"+',' for i,entry in enumerate(entries.values())]
-            inputs = tuple(['' if inputs[i] in ('',',',"''","'',") else entryname+'='+inputs[i] for i,entryname in enumerate(entries.keys())] + [did])
-            print(inputs)
-
-            cursor.execute('''UPDATE healthpractitioners
-SET %s
-WHERE did = %s''', inputs)
-            # results = cursor.fetchall()
-            # fetch_msg = pdDataFrame(results, columns=('Receipt id', 'Total price')).to_string(index=False)
-            # self.fetch_label.config(text=str(fetch_msg))
-            # conn.commit()
+            cursor.execute('''SELECT h.fname,h.lname,h.phone,h.specialization FROM 
+                                    healthpractitioners h WHERE H.email = %s''',(email,))
+            data = cursor.fetchall()
+            data = data[0]
+            if not entries[3] == '':
+                cursor.execute('''SELECT  H.did FROM healthpractitioners h, pharmacists P 
+                                WHERE H.email = %s AND H.did = P.did''',(email,))
+                check = cursor.fetchall()
+                if check:
+                    raise Exception(''' Healthpractitioner with e-mail: %s is registered in the pharmacists table
+                    changing specialization in Healthpratitioner causes a confilct'''%(email))
+                
+            if not data:
+                raise Exception ("e-mail not found")
+            for i in range(0,len(data)):
+                if entries[i] == '':
+                    entries[i]=data[i]
+            entries.append(email)
+            entries=tuple(entries)
+            cursor.execute('''UPDATE healthpractitioners SET fname=%s, lname=%s, phone=%s,specialization=%s
+            WHERE email = %s ''',entries)
+            conn.commit()
+            self.feedback.config(text="Update sucessful")
         except Exception as e:
             self.feedback.config(text=str(e))
         finally:
@@ -285,8 +294,8 @@ class Option4(tk.Frame):
 			GROUP BY S.cid
 			HAVING sum(P.price)>%s::money''',argtuple)
             data=cursor.fetchall()
-            for row in data:
-                cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
+            #for row in data:
+             #   cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
             conn.commit()
             fetch_msg = pdDataFrame(data, columns=('New Subscribed Clients','q'))
             fetch_msg = fetch_msg.drop('q',axis=1)
