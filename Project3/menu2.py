@@ -4,21 +4,34 @@
 #  menu.py
 #
 '''
-Database tool menu
+Database tool menu (Python 3)
 '''
-from __future__ import print_function
+# SHOULD BE USING PYTHON 3 !!!
+# from __future__ import print_function
 import os, sys
 import tkinter as tk
-import psycopg2
 import getpass
+import psycopg2
 from pandas import DataFrame as pdDataFrame
+from sshtunnel import SSHTunnelForwarder
 
 LARGE_FONT = ("Verdana",12)
 ##################################################
-# FOR TESTING ONLY REMOVE HARDCODED PASSWORD AFTER
-# getpass.getpass(prompt='Password: ')
+REMOTE_HOST = 'comp421.cs.mcgill.ca'
+REMOTE_USERNAME = 'cs421g24'
+REMOTE_PASSWORD = ',./susiajtromb124'
+# REMOTE_PASSWORD = getpass.getpass(prompt='Password: ')
+REMOTE_SSH_PORT = 22
+PORT = 5432
+# server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
+#                             ssh_username=REMOTE_USERNAME,
+#                             ssh_password=REMOTE_PASSWORD,
+#                             remote_bind_address=(REMOTE_HOST, PORT),
+#                             local_bind_address=('localhost', PORT))
+# server.start()
+# print("Server connected")
 ##################################################
-conn = psycopg2.connect(dbname='cs421', user='cs421g24', password=",./susiajtromb124", host='comp421.cs.mcgill.ca')
+conn = psycopg2.connect(dbname='cs421', user=REMOTE_USERNAME, password=REMOTE_PASSWORD, host=REMOTE_HOST, port=PORT)
 cursor = conn.cursor()
 
 class Insurance(tk.Tk):
