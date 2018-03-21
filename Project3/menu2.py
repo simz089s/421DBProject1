@@ -36,6 +36,8 @@ conn = psycopg2.connect(dbname=DB, user=REMOTE_USERNAME, password=REMOTE_PASSWOR
 print("Database connected:", DB)
 cursor = conn.cursor()
 
+del REMOTE_PASSWORD # Doesn't do much but hey ¯\_(¬_¬)_/¯
+
 class Insurance(tk.Tk):
     def __init__(self,*args,**kwargs):
         tk.Tk.__init__(self,*args,**kwargs)
