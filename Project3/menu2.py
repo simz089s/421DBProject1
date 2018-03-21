@@ -13,7 +13,8 @@ import tkinter as tk
 import getpass
 import psycopg2
 from pandas import DataFrame as pdDataFrame
-from sshtunnel import SSHTunnelForwarder
+# import paramiko
+# from sshtunnel import SSHTunnelForwarder
 
 LARGE_FONT = ("Verdana",12)
 ##################################################
@@ -23,13 +24,16 @@ REMOTE_PASSWORD = ',./susiajtromb124'
 # REMOTE_PASSWORD = getpass.getpass(prompt='Password: ')
 REMOTE_SSH_PORT = 22
 PORT = 5432
+
 # server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
 #                             ssh_username=REMOTE_USERNAME,
 #                             ssh_password=REMOTE_PASSWORD,
-#                             remote_bind_address=(REMOTE_HOST, PORT),
-#                             local_bind_address=('localhost', PORT))
+#                             remote_bind_address=('localhost', REMOTE_SSH_PORT),
+#                             local_bind_address=('localhost', REMOTE_SSH_PORT))
 # server.start()
 # print("Server connected")
+# print(server.local_bind_port)
+# print(server.remote_bind_port)
 ##################################################
 conn = psycopg2.connect(dbname='cs421', user=REMOTE_USERNAME, password=REMOTE_PASSWORD, host=REMOTE_HOST, port=PORT)
 cursor = conn.cursor()
