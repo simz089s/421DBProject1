@@ -14,28 +14,26 @@ import getpass
 import psycopg2
 from pandas import DataFrame as pdDataFrame
 # import paramiko
-# from sshtunnel import SSHTunnelForwarder
+from sshtunnel import SSHTunnelForwarder
 
 LARGE_FONT = ("Verdana",12)
 ##################################################
 REMOTE_HOST = 'comp421.cs.mcgill.ca'
 REMOTE_USERNAME = 'cs421g24'
-REMOTE_PASSWORD = ',./susiajtromb124'
-# REMOTE_PASSWORD = getpass.getpass(prompt='Password: ')
+REMOTE_PASSWORD = ',./susiajtromb124' # getpass.getpass(prompt='Password: ')
 REMOTE_SSH_PORT = 22
-PORT = 5432
-
-# server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
-#                             ssh_username=REMOTE_USERNAME,
-#                             ssh_password=REMOTE_PASSWORD,
-#                             remote_bind_address=('localhost', REMOTE_SSH_PORT),
-#                             local_bind_address=('localhost', REMOTE_SSH_PORT))
-# server.start()
-# print("Server connected")
-# print(server.local_bind_port)
-# print(server.remote_bind_port)
+server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
+                            ssh_username=REMOTE_USERNAME,
+                            ssh_password=REMOTE_PASSWORD,
+                            remote_bind_address=('localhost', REMOTE_SSH_PORT))
+server.start()
+print("Server connected on remote host:", REMOTE_HOST)
+print("Local bind port:", server.local_bind_port)
 ##################################################
-conn = psycopg2.connect(dbname='cs421', user=REMOTE_USERNAME, password=REMOTE_PASSWORD, host=REMOTE_HOST, port=PORT)
+PORT = 5432
+DB = 'cs421'
+conn = psycopg2.connect(dbname=DB, user=REMOTE_USERNAME, password=REMOTE_PASSWORD, host=REMOTE_HOST, port=PORT)
+print("Database connected:", DB)
 cursor = conn.cursor()
 
 class Insurance(tk.Tk):
@@ -88,7 +86,7 @@ class StartPage(tk.Frame):
 
         select_bt = tk.Button(self,text="Select",command=lambda: controller.show_frame(option.get()))
         select_bt.pack()
-        quit_bt = tk.Button(self,text="Quit",command=quit)
+        quit_bt = tk.Button(self,text="Quit",command=self.quit)
         quit_bt.pack()
 
         # Default selection
@@ -123,7 +121,7 @@ class Option1(tk.Frame):
         self.message = tk.Label(self,text='')
         goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
         goBack.pack()
-        quit_bt = tk.Button(self,text="Quit",command=quit)
+        quit_bt = tk.Button(self,text="Quit",command=self.quit)
         self.message.pack()
         quit_bt.pack()
     def addclient(self):
@@ -159,7 +157,7 @@ class Option2(tk.Frame):
         self.fetch_button = tk.Button(self,text='Fetch',command=self.fetchclientreceipts)
         self.fetch_label = tk.Label(self)
         back_button = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
-        quit_button = tk.Button(self,text="Quit",command=quit)
+        quit_button = tk.Button(self,text="Quit",command=self.quit)
 
         self.cid_label.pack()
         self.cid_entry.pack()
@@ -219,7 +217,7 @@ class Option3(tk.Frame):
         self.feedback.pack()
 
         back_button = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
-        quit_button = tk.Button(self,text="Quit",command=quit)
+        quit_button = tk.Button(self,text="Quit",command=self.quit)
 
         back_button.pack()
         quit_button.pack()
@@ -291,7 +289,7 @@ class Option4(tk.Frame):
         self.message = tk.Label(self,text='')
         goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
         self.lb = tk.Listbox(self,height=5)
-        quit_bt = tk.Button(self,text="Quit",command=quit)
+        quit_bt = tk.Button(self,text="Quit",command=self.quit)
         self.message.pack()
         self.lb.pack()
         goBack.pack()
@@ -338,22 +336,23 @@ class Option5(tk.Frame):
 APP = Insurance()
 
 def quit():
-    cursor.close()
-    conn.close()
     APP.destroy()
-    return 0
+    APP.quit()
 
 def main(argc, args):
+    APP.protocol("WM_DELETE_WINDOW", APP.quit)
     APP.mainloop()
+    print("Closing connection")
+    quit()
     cursor.close()
     conn.close()
+    server.stop()
     return 0
 
 if __name__ == "__main__":
     exit_code = main(len(sys.argv), sys.argv)
     cursor.close()
     conn.close()
+    server.stop()
+    print("Exiting program")
     sys.exit(exit_code)
-
-cursor.close()
-conn.close()
