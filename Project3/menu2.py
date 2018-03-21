@@ -342,7 +342,7 @@ def quit():
 def main(argc, args):
     APP.protocol("WM_DELETE_WINDOW", APP.quit)
     APP.mainloop()
-    print("Closing connection")
+    print("Closing connections")
     quit()
     cursor.close()
     conn.close()
