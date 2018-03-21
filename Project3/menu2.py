@@ -83,7 +83,7 @@ class StartPage(tk.Frame):
         option3.pack(anchor="nw")
         option4 = tk.Radiobutton(self,text='Reward Plan',value=4,variable=option)
         option4.pack(anchor="nw")
-        option5 = tk.Radiobutton(self,text='Option5',value=5,variable=option)
+        option5 = tk.Radiobutton(self,text='Company drugs records',value=5,variable=option)
         option5.pack(anchor="nw")
 
         select_bt = tk.Button(self,text="Select",command=lambda: controller.show_frame(option.get()))
@@ -312,7 +312,7 @@ class Option4(tk.Frame):
 			HAVING sum(P.price)>%s::money''',argtuple)
             data=cursor.fetchall()
             #for row in data:
-             #   cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
+              # cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
             conn.commit()
             fetch_msg = pdDataFrame(data, columns=('New Subscribed Clients','q'))
             fetch_msg = fetch_msg.drop('q',axis=1)
@@ -331,10 +331,44 @@ class Option4(tk.Frame):
 class Option5(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self,text="You choose option 5",font=LARGE_FONT)
+        label = tk.Label(self,text="Company drugs records",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
+        PLANID = tk.Label(self,text="Company name")
+        PLANID.pack()
+        self.e1 = tk.Entry(self)
+        self.e1.pack()
+        submit_btn = tk.Button(self,text="Submit",command=self.getRegiseredDrugs)
+        submit_btn.pack()
+        self.message = tk.Label(self,text='')
+        goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
+        self.lb = tk.Listbox(self,height=5,width=40)
+        quit_bt = tk.Button(self,text="Quit",command=self.quit)
+        self.message.pack()
+        self.lb.pack()
+        goBack.pack()
+        quit_bt.pack()
+    def getRegiseredDrugs(self):
+        global cursor
+        try:
+            comp = self.e1.get()
+            if comp == '':
+                raise Exception('No company name entered')
+            cursor.execute('''SELECT d.duid,d.dname FROM drugs d WHERE D.manufacturer=%s''',(comp,))
+            data = cursor.fetchall()
+            if not data:
+                raise Exception('the company %s does not exist in the database'%(comp))
+            self.lb.delete(0, tk.END)
+            self.message.config(text="Drugs manufactured by %s"%(comp))
+            for row in data:
+                s = str(row[0])+' '+str(row[1])
+                self.lb.insert(0,s)
+        except Exception as e:
+            self.lb.delete(0, tk.END)
+            self.message.config(text=str(e))
+        finally:
+            self.e1.delete(0, tk.END)
 
-
+            
 APP = Insurance()
 
 def quit():
