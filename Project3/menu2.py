@@ -20,7 +20,7 @@ LARGE_FONT = ("Verdana",12)
 ##################################################
 REMOTE_HOST = 'comp421.cs.mcgill.ca'
 REMOTE_USERNAME = 'cs421g24'
-REMOTE_PASSWORD = ',./susiajtromb124' # getpass.getpass(prompt='Password: ')
+REMOTE_PASSWORD = getpass.getpass(prompt='Password: ')
 REMOTE_SSH_PORT = 22
 server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
                             ssh_username=REMOTE_USERNAME,
@@ -236,18 +236,18 @@ class Option3(tk.Frame):
             if email=='':
                 raise Exception("e-mail field empty")
 
-            cursor.execute('''SELECT h.fname,h.lname,h.phone,h.specialization FROM 
+            cursor.execute('''SELECT h.fname,h.lname,h.phone,h.specialization FROM
                                     healthpractitioners h WHERE H.email = %s''',(email,))
             data = cursor.fetchall()
             data = data[0]
             if not entries[3] == '':
-                cursor.execute('''SELECT  H.did FROM healthpractitioners h, pharmacists P 
+                cursor.execute('''SELECT  H.did FROM healthpractitioners h, pharmacists P
                                 WHERE H.email = %s AND H.did = P.did''',(email,))
                 check = cursor.fetchall()
                 if check:
                     raise Exception(''' Healthpractitioner with e-mail: %s is registered in the pharmacists table
                     changing specialization in Healthpratitioner causes a confilct'''%(email))
-                
+
             if not data:
                 raise Exception ("e-mail not found")
             for i in range(0,len(data)):
@@ -311,8 +311,8 @@ class Option4(tk.Frame):
 			GROUP BY S.cid
 			HAVING sum(P.price)>%s::money''',argtuple)
             data=cursor.fetchall()
-            #for row in data:
-              # cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
+            for row in data:
+              cursor.execute("INSERT INTO subscriptions VALUES (%s,%s,CURRENT_DATE,CURRENT_DATE+30)",(row[0],argtuple[0]))
             conn.commit()
             fetch_msg = pdDataFrame(data, columns=('New Subscribed Clients','q'))
             fetch_msg = fetch_msg.drop('q',axis=1)
@@ -368,7 +368,7 @@ class Option5(tk.Frame):
         finally:
             self.e1.delete(0, tk.END)
 
-            
+
 APP = Insurance()
 
 def quit():
