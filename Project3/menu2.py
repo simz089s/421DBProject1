@@ -137,8 +137,8 @@ class Option1(tk.Frame):
             except Exception as e:
                 self.message.config(text="Phone number invalid")
                 return
-            if phonum > 9999999999 and phonum > 999999999:
-                raise Exception("Phone number is too long")
+            if phonum > 9999999999 or phonum < 999999999:
+                raise Exception("Phone number is too long or too short")
             for e in argtuple:
                 if e=='':
                     raise Exception("All fields must have a value")
@@ -250,8 +250,8 @@ class Option3(tk.Frame):
                 except Exception as e:
                     self.feedback.config(text="Phone number invalid")
                     return
-                if phonum > 9999999999 and phonum > 999999999:
-                    raise Exception("Phone number is too long")
+                if phonum > 9999999999 or phonum < 999999999:
+                    raise Exception("Phone number is too long or too short")
             cursor.execute('''SELECT h.fname,h.lname,h.phone,h.specialization FROM
                                     healthpractitioners h WHERE H.email = %s''',(email,))
             data = cursor.fetchall()
