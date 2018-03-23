@@ -16,7 +16,7 @@ CREATE INDEX specialization_idx
 2) Index on the manufacturer attribute of the Drugs relation:
 Indexing on manufacturer is useful to categorize manufacturers into generic drug manufacturers and brand-name drug manufacturers.
 When the client buys a prescribed drug, the drug sold to the client by the pharmacist could be made by different manufacturers.
-This is important to the insurance company so that different coverages can be optimized and offered to the clients. The clients also need to know about the difference in the coverage of a generic drug versus a brand-name drug. 
+This is important to the insurance company so that different coverages can be optimized and offered to the clients. The clients also need to know about the difference in the coverage of a generic drug versus a brand-name drug.
 */
 
 CREATE INDEX manufacturer_idx
@@ -24,5 +24,3 @@ CREATE INDEX manufacturer_idx
 ;
 
 -- DROP INDEX manufacturer_idx;
-
-
