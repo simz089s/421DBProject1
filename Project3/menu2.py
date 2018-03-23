@@ -279,11 +279,11 @@ class Option4(tk.Frame):
         tk.Frame.__init__(self,parent)
         label = tk.Label(self,text="Subscribe to reward plan",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        PLANID = tk.Label(self,text="PlanID")
+        PLANID = tk.Label(self,text="Plan ID")
         PLANID.pack()
         self.e1 = tk.Entry(self)
         self.e1.pack()
-        spendlimit = tk.Label(self,text="Spend limit")
+        spendlimit = tk.Label(self,text="Spending limit")
         spendlimit.pack()
         self.e2= tk.Entry(self)
         self.e2.pack()
@@ -295,8 +295,8 @@ class Option4(tk.Frame):
         quit_bt = tk.Button(self,text="Quit",command=self.quit)
         self.message.pack()
         self.lb.pack()
-        goBack.pack()
-        quit_bt.pack()
+        quit_bt.pack(side='bottom')
+        goBack.pack(side='bottom')
 
     def subscribe(self):
         global cursor
@@ -346,8 +346,8 @@ class Option5(tk.Frame):
         quit_bt = tk.Button(self,text="Quit",command=self.quit)
         self.message.pack()
         self.lb.pack()
-        goBack.pack()
-        quit_bt.pack()
+        quit_bt.pack(side='bottom')
+        goBack.pack(side='bottom')
     def getRegiseredDrugs(self):
         global cursor
         try:
