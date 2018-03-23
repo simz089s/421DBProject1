@@ -4,8 +4,9 @@
  * Query to extract number of new subscriptions per month
  * in the year 2018, sorted by month. Months which have
  * no new subscriptions are not included in the result.
+ * (Also, casting the month to int)
  */
-SELECT EXTRACT(MONTH FROM startdate), count(subid)
+SELECT CAST(EXTRACT(MONTH FROM startdate) AS int) AS MONTH, count(subid) AS num_new_subscriptions
 FROM subscriptions S
 WHERE
 	EXTRACT(YEAR FROM startdate) = 2018
