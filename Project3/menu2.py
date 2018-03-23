@@ -81,15 +81,15 @@ class StartPage(tk.Frame):
         option2.pack(anchor="nw")
         option3 = tk.Radiobutton(self,text='Update health practictioner info',value=3,variable=option)
         option3.pack(anchor="nw")
-        option4 = tk.Radiobutton(self,text='Reward Plan',value=4,variable=option)
+        option4 = tk.Radiobutton(self,text='Subscribe to reward plan',value=4,variable=option)
         option4.pack(anchor="nw")
-        option5 = tk.Radiobutton(self,text='Company drugs records',value=5,variable=option)
+        option5 = tk.Radiobutton(self,text='List company drug records',value=5,variable=option)
         option5.pack(anchor="nw")
 
         select_bt = tk.Button(self,text="Select",command=lambda: controller.show_frame(option.get()))
-        select_bt.pack()
         quit_bt = tk.Button(self,text="Quit",command=self.quit)
-        quit_bt.pack()
+        quit_bt.pack(side='bottom')
+        select_bt.pack(side='bottom')
 
         # Default selection
         option1.select()
@@ -119,13 +119,13 @@ class Option1(tk.Frame):
         self.e4 = tk.Entry(self)
         self.e4.pack()
         submit_btn = tk.Button(self,text="Insert",command=self.addclient)
-        submit_btn.pack()
         self.message = tk.Label(self,text='')
         goBack = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
-        goBack.pack()
         quit_bt = tk.Button(self,text="Quit",command=self.quit)
+        submit_btn.pack()
         self.message.pack()
-        quit_bt.pack()
+        quit_bt.pack(side='bottom')
+        goBack.pack(side='bottom')
     def addclient(self):
         global cursor
         argtuple = (self.e1.get(),self.e2.get(),self.e3.get(),self.e4.get())
@@ -147,7 +147,7 @@ class Option1(tk.Frame):
 
 class Option2(tk.Frame):
     '''
-    Fetch client receipts
+    Fetch client receipts per ID number
     '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
@@ -165,8 +165,8 @@ class Option2(tk.Frame):
         self.cid_entry.pack()
         self.fetch_button.pack()
         self.fetch_label.pack()
-        back_button.pack()
-        quit_button.pack()
+        quit_button.pack(side='bottom')
+        back_button.pack(side='bottom')
 
     def fetchclientreceipts(self):
         try:
@@ -221,8 +221,8 @@ class Option3(tk.Frame):
         back_button = tk.Button(self,text="<- Back",command=lambda: controller.show_frame(0))
         quit_button = tk.Button(self,text="Quit",command=self.quit)
 
-        back_button.pack()
-        quit_button.pack()
+        quit_button.pack(side='bottom')
+        back_button.pack(side='bottom')
 
     def updateinfo(self):
         try:
@@ -234,7 +234,7 @@ class Option3(tk.Frame):
                 self.specialization_entry.get()
             ]
             if email=='':
-                raise Exception("e-mail field empty")
+                raise Exception("email field empty")
 
             cursor.execute('''SELECT h.fname,h.lname,h.phone,h.specialization FROM
                                     healthpractitioners h WHERE H.email = %s''',(email,))
@@ -245,11 +245,12 @@ class Option3(tk.Frame):
                                 WHERE H.email = %s AND H.did = P.did''',(email,))
                 check = cursor.fetchall()
                 if check:
-                    raise Exception(''' Healthpractitioner with e-mail: %s is registered in the pharmacists table
+                    raise Exception(''' Healthpractitioner with email: %s is registered in the pharmacists table
+
                     changing specialization in Healthpratitioner causes a confilct'''%(email))
 
             if not data:
-                raise Exception ("e-mail not found")
+                raise Exception ("email not found")
             for i in range(0,len(data)):
                 if entries[i] == '':
                     entries[i]=data[i]
@@ -276,7 +277,7 @@ class Option4(tk.Frame):
     '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self,text="Reward Plan",font=LARGE_FONT)
+        label = tk.Label(self,text="Subscribe to reward plan",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
         PLANID = tk.Label(self,text="PlanID")
         PLANID.pack()
@@ -331,7 +332,7 @@ class Option4(tk.Frame):
 class Option5(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self,text="Company drugs records",font=LARGE_FONT)
+        label = tk.Label(self,text="List company drug records",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
         PLANID = tk.Label(self,text="Company name")
         PLANID.pack()
