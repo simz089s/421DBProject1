@@ -20,7 +20,7 @@ LARGE_FONT = ("Verdana",12)
 ##################################################
 REMOTE_HOST = 'comp421.cs.mcgill.ca'
 REMOTE_USERNAME = 'cs421g24'
-REMOTE_PASSWORD = getpass.getpass(prompt='Password: ')
+REMOTE_PASSWORD =  getpass.getpass(prompt='Password: ')
 REMOTE_SSH_PORT = 22
 server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
                             ssh_username=REMOTE_USERNAME,
@@ -130,6 +130,15 @@ class Option1(tk.Frame):
         global cursor
         argtuple = (self.e1.get(),self.e2.get(),self.e3.get(),self.e4.get())
         try:
+            if '@' not in argtuple[0]:
+                raise Exception("email address is not valid")
+            try:
+                phonum = int(argtuple[1])
+            except Exception as e:
+                self.message.config(text="Phone number invalid")
+                return
+            if phonum > 9999999999 and phonum > 999999999:
+                raise Exception("Phone number is too long")
             for e in argtuple:
                 if e=='':
                     raise Exception("All fields must have a value")
@@ -233,20 +242,27 @@ class Option3(tk.Frame):
                 self.phone_entry.get(),
                 self.specialization_entry.get()
             ]
-            if email=='':
+            if not email:
                 raise Exception("email field empty")
-
+            if entries[2]:
+                try:
+                    phonum = int(entries[2])
+                except Exception as e:
+                    self.feedback.config(text="Phone number invalid")
+                    return
+                if phonum > 9999999999 and phonum > 999999999:
+                    raise Exception("Phone number is too long")
             cursor.execute('''SELECT h.fname,h.lname,h.phone,h.specialization FROM
                                     healthpractitioners h WHERE H.email = %s''',(email,))
             data = cursor.fetchall()
             data = data[0]
-            if not entries[3] == '':
+            check = None
+            if entries[3]:
                 cursor.execute('''SELECT  H.did FROM healthpractitioners h, pharmacists P
-                                WHERE H.email = %s AND H.did = P.did''',(email,))
+                                  WHERE H.email = %s AND H.did = P.did''',(email,))
                 check = cursor.fetchall()
                 if check:
                     raise Exception(''' Healthpractitioner with email: %s is registered in the pharmacists table
-
                     changing specialization in Healthpratitioner causes a confilct'''%(email))
 
             if not data:

@@ -13,7 +13,11 @@ CREATE OR REPLACE FUNCTION pharm_except() RETURNS trigger AS $$
     END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER emp_audit ON healthpractitioners;
+
 CREATE TRIGGER emp_audit
 AFTER UPDATE ON healthpractitioners
-    FOR EACH ROW EXECUTE PROCEDURE pharm_except();
+	FOR EACH ROW 
+	WHEN (OLD.specialization IS DISTINCT FROM NEW.specialization) 
+  	EXECUTE PROCEDURE pharm_except();
    
