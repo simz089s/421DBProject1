@@ -1,5 +1,3 @@
--- For table 1
-
 /*
  * Query to extract number of new subscriptions per month
  * in the year 2018, sorted by month. First part of the query
