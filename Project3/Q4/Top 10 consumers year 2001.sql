@@ -1,6 +1,6 @@
 /*
- * Query to find the total price of each insurance plan
- * by adding up the prices of all the coverages within it
+ * Query to find the top 10 biggest spender for the year 2001
+ * By calculating how much they paid in their plans total in the year.
  */
 SELECT
 	s.cid,
