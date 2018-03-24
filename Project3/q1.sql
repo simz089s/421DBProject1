@@ -1,6 +1,6 @@
 /* Function that reimburses all clients that have not yet been reimbursed
  * Provided that each reimbursments made does not exceed maxval
- * and that the receipt (rda) and claim date (ida) were done before these dates
+ * and that the receipt date and claim date are older than rda and ida
  * Returns the total amount of money reimbursed
  */
 CREATE OR REPLACE FUNCTION reimburse(maxval MONEY, rda DATE, ida DATE) RETURNS MONEY AS $$

@@ -7,7 +7,7 @@
  * gets the month numbers which have 0 new subscriptions.
  * (Also, casting the month to int)
  */
-SELECT CAST(EXTRACT(MONTH FROM startdate) AS int) AS MONTH, count(subid) AS num_new_subscriptions
+CREATE VIEW SALES AS SELECT CAST(EXTRACT(MONTH FROM startdate) AS int) AS MONTH, count(subid) AS num_new_subscriptions
 FROM subscriptions S
 WHERE
 	EXTRACT(YEAR FROM startdate) = 2018
@@ -27,3 +27,5 @@ EXCEPT
 )
 ORDER BY MONTH
 ;
+
+\COPY (SELECT * FROM Sales) TO 'sales.csv' WITH CSV;
