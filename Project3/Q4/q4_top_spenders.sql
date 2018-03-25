@@ -1,6 +1,7 @@
 /*
  * Query to find the top 10 biggest spender for the year 2001
- * By calculating how much they paid in their plans total in the year.
+ * By calculating how much they paid in their plans total in the year divided 
+ * by the number of plans they have for the entire year.
  */
 SELECT
 	s.cid,
