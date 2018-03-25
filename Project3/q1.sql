@@ -1,11 +1,12 @@
 /* Function that reimburses all clients that have not yet been reimbursed
- * Provided that each reimbursments made does not exceed maxval
- * and that the receipt date and claim date are older than rda and ida
+ * Provided that each reimbursements made does not exceed maxval
+ * , that the receipt date and claim date are older than rda and ida
+ * and finally that they were holding at least 1 valid subsriptions at that time
  * Returns the total amount of money reimbursed
  */
 CREATE OR REPLACE FUNCTION reimburse(maxval MONEY, rda DATE, ida DATE) RETURNS MONEY AS $$
 DECLARE	
-	--Get the table containing for all valid reimbursments except the re_amount
+	--Get the table containing for all valid reimbursements except the re_amount
 	claim_cur CURSOR FOR SELECT I.icid,Re.totalprice,P.cid,Re."date" FROM insuranceclaims I, receipts Re
 	INNER JOIN prescriptions P ON Re.pid=P.pid WHERE NOT EXISTS(SELECT FROM reimbursed R WHERE R.icid = I.icid)
 	AND I."date" < ida::date AND I.rid = Re.rid AND Re."date" < rda::date;
@@ -22,7 +23,7 @@ BEGIN
 		-- And if the amount does not exceed the amount enterd
 		IF(rec_amount<maxval AND EXISTS(SELECT FROM subscriptions S WHERE S.enddate > rdate AND S.cid = client))
 			THEN
-				--Uses limit to only get one output as subid
+				--Uses limit here as we are only interested to know if there exist at least one valid output
 				INSERT INTO reimbursed VALUES ((SELECT S.subid FROM subscriptions S WHERE S.enddate > rdate AND S.cid = client LIMIT 1)
 				,icid,rec_amount,CURRENT_Date);
 				counter = counter+rec_amount;

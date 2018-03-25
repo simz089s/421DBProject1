@@ -4,7 +4,7 @@
  */
 SELECT
 	s.cid,
-	sum(p.price*(extract(month from s.enddate)-extract(month from s.startdate))) AS totalspending
+	sum(p.price*(extract(month from s.enddate)-extract(month from s.startdate)))/count(*) AS totalspending
 FROM
 	subscriptions s,
 	insuranceplans p

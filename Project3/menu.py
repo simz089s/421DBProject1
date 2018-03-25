@@ -14,7 +14,7 @@ import getpass
 import psycopg2
 from pandas import DataFrame as pdDataFrame
 # import paramiko
-from sshtunnel import SSHTunnelForwarder
+#from sshtunnel import SSHTunnelForwarder
 
 LARGE_FONT = ("Verdana",12)
 ##################################################
@@ -22,13 +22,13 @@ REMOTE_HOST = 'comp421.cs.mcgill.ca'
 REMOTE_USERNAME = 'cs421g24'
 REMOTE_PASSWORD =  getpass.getpass(prompt='Password: ')
 REMOTE_SSH_PORT = 22
-server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
-                            ssh_username=REMOTE_USERNAME,
-                            ssh_password=REMOTE_PASSWORD,
-                            remote_bind_address=('localhost', REMOTE_SSH_PORT))
-server.start()
-print("Server connected on remote host:", REMOTE_HOST)
-print("Local bind port:", server.local_bind_port)
+# server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
+#                             ssh_username=REMOTE_USERNAME,
+#                             ssh_password=REMOTE_PASSWORD,
+#                             remote_bind_address=('localhost', REMOTE_SSH_PORT))
+# server.start()
+# print("Server connected on remote host:", REMOTE_HOST)
+# print("Local bind port:", server.local_bind_port)
 ##################################################
 PORT = 5432
 DB = 'cs421'
