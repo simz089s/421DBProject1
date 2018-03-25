@@ -9,7 +9,7 @@ The GUI was done using Tkinter python librairy and takes advantage of object ori
 ### Prerequisites
 
 Be connected to the McGill internet or use a McGill vpn otherwise it will not be possible to access the database.  
- We have just in case implemented a potential ssh connection that can be uncomented to allow database access without the two conditiions mentioned above. 
+ We have just in case implemented a potential ssh connection that can be uncomented to allow database access without the two conditions mentioned above.   
 Librairies:  
 
     Tkinter
@@ -37,7 +37,7 @@ Allows the user to add a client to the database, checks for email validity using
 Given a client ID retrieve all of that clients receipt ID along with the clients payment for that receipt
 
 #### Update healthpractitioners
-Allows to update the healthpractitioners info using their unique email address. Checking that the number contains exactly 10 digits. Update fails if updating the specialization of a pharmacist in the pharmacits table as that does not respect the constrains that only pharmacists are eligible to give drug receipts.
+Allows to update the healthpractitioners info using their unique email address. Checking that the number contains exactly 10 digits. Update fails if trying to update the specialization of a pharmacist if this one is in the pharmacits table as that violates a constrain.
 
 #### Subscribe to reward plan
 Automate the process of offering trial subscriptions for a month starting from the current date of a planid of our choice to all clients that pay greater than a certain amount per month at the current date and are not yet register in that plan.
@@ -48,8 +48,9 @@ Retrieve the drug ID and names of all the drugs manufactured by a certain compan
 ## Q3
 
 ## Q4
-Obtained two charts, 1 showing the amount of new subscriptions per month in 2016.  
-2 showing the top 10 avg spending in the year 2001.
+Obtained two charts:  
+1 showing the number of new subscriptions per month in 2016.  
+2 showing the top 10 avg spending in the year 2001 label by clint IDs.
 
 ## Q5
- A trigger was made in order to ensure that the pharmicist constrains stays respected when updating the health practitioners list.
+ A trigger was made in order to ensure that the pharmicist constrains stays respected when updating the healthpractitioners table.
