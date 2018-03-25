@@ -14,21 +14,22 @@ import getpass
 import psycopg2
 from pandas import DataFrame as pdDataFrame
 # import paramiko
-#from sshtunnel import SSHTunnelForwarder
 
 LARGE_FONT = ("Verdana",12)
 ##################################################
 REMOTE_HOST = 'comp421.cs.mcgill.ca'
 REMOTE_USERNAME = 'cs421g24'
-REMOTE_PASSWORD =  getpass.getpass(prompt='Password: ')
+REMOTE_PASSWORD = getpass.getpass(prompt='Password: ')
 REMOTE_SSH_PORT = 22
-# server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
-#                             ssh_username=REMOTE_USERNAME,
-#                             ssh_password=REMOTE_PASSWORD,
-#                             remote_bind_address=('localhost', REMOTE_SSH_PORT))
-# server.start()
-# print("Server connected on remote host:", REMOTE_HOST)
-# print("Local bind port:", server.local_bind_port)
+# if input('Use SSH? (y/n): ') in ('y','Y'):
+#     from sshtunnel import SSHTunnelForwarder
+#     server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
+#                                 ssh_username=REMOTE_USERNAME,
+#                                 ssh_password=REMOTE_PASSWORD,
+#                                 remote_bind_address=('localhost', REMOTE_SSH_PORT))
+#     server.start()
+#     print("Server connected on remote host:", REMOTE_HOST)
+#     print("Local bind port:", server.local_bind_port)
 ##################################################
 PORT = 5432
 DB = 'cs421'
@@ -399,13 +400,12 @@ def main(argc, args):
     quit()
     cursor.close()
     conn.close()
-    server.stop()
+    try:
+        server.stop()
+    except:
+        pass
+    print("Exiting program")
     return 0
 
 if __name__ == "__main__":
-    exit_code = main(len(sys.argv), sys.argv)
-    cursor.close()
-    conn.close()
-    server.stop()
-    print("Exiting program")
-    sys.exit(exit_code)
+    sys.exit(main(len(sys.argv), sys.argv))
