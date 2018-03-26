@@ -13,7 +13,6 @@ import tkinter as tk
 import getpass
 import psycopg2
 from pandas import DataFrame as pdDataFrame
-# import paramiko
 
 LARGE_FONT = ("Verdana",12)
 ##################################################
@@ -21,21 +20,47 @@ REMOTE_HOST = 'comp421.cs.mcgill.ca'
 REMOTE_USERNAME = 'cs421g24'
 REMOTE_PASSWORD = getpass.getpass(prompt='Password: ')
 REMOTE_SSH_PORT = 22
-# if input('Use SSH? (y/n): ') in ('y','Y'):
-#     from sshtunnel import SSHTunnelForwarder
-#     server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
-#                                 ssh_username=REMOTE_USERNAME,
-#                                 ssh_password=REMOTE_PASSWORD,
-#                                 remote_bind_address=('localhost', REMOTE_SSH_PORT))
-#     server.start()
-#     print("Server connected on remote host:", REMOTE_HOST)
-#     print("Local bind port:", server.local_bind_port)
-##################################################
-PORT = 5432
+REMOTE_HOST_PORT = 5432
 DB = 'cs421'
-conn = psycopg2.connect(dbname=DB, user=REMOTE_USERNAME, password=REMOTE_PASSWORD, host=REMOTE_HOST, port=PORT)
-print("Database connected:", DB)
-cursor = conn.cursor()
+try:
+    if input('Use SSH? (y/n): ') in ('y','Y'):
+        import paramiko
+        from sshtunnel import SSHTunnelForwarder
+        server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
+                                    ssh_username=REMOTE_USERNAME,
+                                    ssh_password=REMOTE_PASSWORD,
+                                    remote_bind_address=('localhost', REMOTE_HOST_PORT),
+                                    local_bind_address=('localhost', 0))
+        server.start()
+        print("Server connected on remote host:", REMOTE_HOST)
+        print("Remote host and SSH ports:", REMOTE_HOST_PORT, REMOTE_SSH_PORT)
+        print("Local bind port:", server.local_bind_port)
+        server.check_tunnels()
+        print('Tunnel is up?', server.tunnel_is_up)
+        conn = psycopg2.connect(database=DB,
+                                user=REMOTE_USERNAME,
+                                password=REMOTE_PASSWORD,
+                                host=server.local_bind_host,
+                                port=server.local_bind_port)
+    else:
+        conn = psycopg2.connect(dbname=DB, user=REMOTE_USERNAME, password=REMOTE_PASSWORD, host=REMOTE_HOST, port=REMOTE_HOST_PORT)
+    print("Database connected:", DB)
+    cursor = conn.cursor()
+except Exception as e:
+    try:
+        cursor.close()
+    except:
+        print('No cursor')
+    try:
+        conn.close()
+    except:
+        print('No connection')
+    try:
+        server.stop() # server.close()
+    except:
+        print('No SSH')
+    print(e)
+    exit(0)
 
 del REMOTE_PASSWORD # Doesn't do much but hey ¯\_(¬_¬)_/¯
 
@@ -401,9 +426,9 @@ def main(argc, args):
     cursor.close()
     conn.close()
     try:
-        server.stop()
+        server.stop() # server.close()
     except:
-        pass
+        print('Not using SSH')
     print("Exiting program")
     return 0
 
