@@ -23,7 +23,7 @@ REMOTE_SSH_PORT = 22
 REMOTE_HOST_PORT = 5432
 DB = 'cs421'
 try:
-    if input('Use SSH? (y/n): ') in ('y','Y'):
+    if input('Use SSH? (y or Y): ') in ('y','Y'):
         import paramiko
         from sshtunnel import SSHTunnelForwarder
         server = SSHTunnelForwarder((REMOTE_HOST, REMOTE_SSH_PORT),
@@ -43,8 +43,9 @@ try:
                                 host=server.local_bind_host,
                                 port=server.local_bind_port)
     else:
+        print('Assuming no SSH')
         conn = psycopg2.connect(dbname=DB, user=REMOTE_USERNAME, password=REMOTE_PASSWORD, host=REMOTE_HOST, port=REMOTE_HOST_PORT)
-    print("Database connected:", DB)
+        print("Database connected:", DB)
     cursor = conn.cursor()
 except Exception as e:
     try:
