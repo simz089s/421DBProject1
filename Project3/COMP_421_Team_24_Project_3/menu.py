@@ -302,7 +302,7 @@ class Option3(tk.Frame):
             cursor.execute('''UPDATE healthpractitioners SET fname=%s, lname=%s, phone=%s,specialization=%s
             WHERE email = %s ''',entries)
             conn.commit()
-            self.feedback.config(text="Update sucessful")
+            self.feedback.config(text="Update sucessful on %s"%(email))
         except Exception as e:
             self.feedback.config(text=str(e))
         finally:
