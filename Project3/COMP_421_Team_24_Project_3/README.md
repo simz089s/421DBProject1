@@ -41,8 +41,8 @@ On Mac there is Brew.
 On Linux, most of them can normally be installed with the distribution's package manager (assuming using popular repositories), for example in Debian or Ubuntu-based it is `apt install python-tk python-psycopg2 python-pandas`.
 
 Recommended (or otherwise if above not possible) is using (Ana)conda, if not possible then pip, otherwise easy_install.
-(Might need easy_install for sshtunnel, paramiko is `python-paramkiko` for Ubuntu or similar)  
-`conda install ...`, `easy_install ...`, `pip install --upgrade psycopg2 pandas` (might need `sudo -H`)
+(Might need easy_install for sshtunnel, paramiko is `python-paramiko` for Ubuntu or similar)  
+Examples: `conda install ...`, `easy_install ...`, `pip install --upgrade psycopg2 pandas` (might need `sudo -H`)
 
 ### Running
 Terminal
