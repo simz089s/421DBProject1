@@ -22,7 +22,8 @@ They can be easily changed by simply changing the variables in the Python source
 
 ### Prerequisites
 Be connected to the McGill internet or use a McGill VPN otherwise it will not be possible to access the database.  
-We have just in case implemented a potential SSH connection that can be uncommented to allow database access without the two conditions mentioned above.
+Just in case we have implemented an SSH connection forwarder that can be used to allow database access without the two conditions mentioned above.
+There will be a prompt asking whether to use it or not.
 
 #### Notice: we are using Python 3
 
