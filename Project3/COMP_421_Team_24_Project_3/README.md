@@ -40,7 +40,7 @@ On Linux, most of them can normally be installed with the distribution's package
 
 On Mac there is Brew.
 
-Recommended (or otherwise if previous not possible) is using (Ana)conda, if not possible then pip, otherwise easy_install.
+Recommended (or otherwise if above not possible) is using (Ana)conda, if not possible then pip, otherwise easy_install.
 (Might need easy_install for sshtunnel, paramiko can use `python-paramkiko for Ubuntu or similar`)  
 `conda install ...`, `easy_install ...`, `pip install --upgrade psycopg2 pandas` (might need `sudo -H`)
 
