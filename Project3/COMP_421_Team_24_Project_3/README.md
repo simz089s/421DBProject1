@@ -12,7 +12,7 @@ The GUI was done using the Tkinter python library and takes advantage of object-
 The project was demo-ed to the TA on Friday, March 25th 2018.
 Login happens in the terminal and all the rest of the operations happen in the GUI.
 
-The application connects through standard SSH port 22 at `comp421.cs.mcgill.ca` using our group username and password using the sshtunnel and paramiko library.
+The application connects through standard SSH port 22 at `comp421.cs.mcgill.ca` using our group username and password using the `sshtunnel` and `paramiko` library.
 It will bind to localhost on both sides of the tunnel (standard port 5432 on server and port 0 locally to let the OS select an open port).
 
 It then connects to the `cs421` database using psycopg2 library using the same username and password.
@@ -25,7 +25,7 @@ Be connected to the McGill internet or use a McGill VPN otherwise it will not be
 Just in case we have implemented an SSH connection forwarder that can be used to allow database access without the two conditions mentioned above.
 There will be a prompt asking whether to use it or not.
 
-#### Notice: we are using Python 3
+#### Note: this was made with Python 3
 
 #### Librairies:  
 - tkinter (Python 3)
@@ -36,7 +36,7 @@ There will be a prompt asking whether to use it or not.
 - paramiko (for sshtunnel)
 
 #### Installation of libraries (if necessary):
-On Linux they most of them can normally be installed with the distribution's package manager (assuming you are using popular repositories), for example in Debian or Ubuntu-based it is `apt install python-tk python-psycopg2 python-pandas`.  
+On Linux, most of them can normally be installed with the distribution's package manager (assuming using popular repositories), for example in Debian or Ubuntu-based it is `apt install python-tk python-psycopg2 python-pandas`.  
 On Mac using Brew.
 
 Recommended is using (Ana)Conda, if not possible then pip, otherwise easy_install.
