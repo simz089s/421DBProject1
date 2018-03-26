@@ -36,10 +36,11 @@ There will be a prompt asking whether to use it or not.
 - paramiko (for sshtunnel)
 
 #### Installation of libraries (if necessary):
-On Linux, most of them can normally be installed with the distribution's package manager (assuming using popular repositories), for example in Debian or Ubuntu-based it is `apt install python-tk python-psycopg2 python-pandas`.  
-On Mac using Brew.
+On Linux, most of them can normally be installed with the distribution's package manager (assuming using popular repositories), for example in Debian or Ubuntu-based it is `apt install python-tk python-psycopg2 python-pandas`.
 
-Recommended is using (Ana)Conda, if not possible then pip, otherwise easy_install.
+On Mac there is Brew.
+
+Recommended (or otherwise if previous not possible) is using (Ana)conda, if not possible then pip, otherwise easy_install.
 (Might need easy_install for sshtunnel, paramiko can use `python-paramkiko for Ubuntu or similar`)  
 `conda install ...`, `easy_install ...`, `pip install --upgrade psycopg2 pandas` (might need `sudo -H`)
 
