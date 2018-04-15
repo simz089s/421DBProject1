@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+<div class="topheading">
+  <h1>Hadoop and Pig Latin</h1>
+<h4>Due date: Monday, April 16, 23:59 </h4>
+</div>
+
+Note that you do this assignment 4 in the groups that  you have created for your project. 
+
+<p>
+
+<h2>Setup Instructions your Pig Cluster</h2>
+
+<p>
+Follow the instructions provided in the MapReduce Instructions document provided in MyCourses.
+</p>
+
+<h2>Useful Links</h2>
+<p><a rel="noopener" href="https://pig.apache.org/docs/r0.15.0/basic.html" target="_blank">Hadoop&#39;s Pig Latin Documentation</a>
+<p><a rel="noopener" href="https://pig.apache.org/docs/r0.15.0/test.html" target="_blank">How to get some of the diagnostic info asked in questions</a>
+<p><a rel="noopener" href="https://www.safaribooksonline.com/library/view/programming-pig/9781449317881" target="_blank">You are obsessed, you want more of Pig</a>
+
+
+
+
+<h2> Information about the data used in this assignment </h2>
+
+The data used for this assignment is from the <a rel="noopener" href="https://grouplens.org/datasets/movielens/">movielens data sets</a>, specifically the ml-latest-small data set.
+We did minor transformation and cleanup on the data set, so that it fits properly into the schema provided in the assignment.
+
+The data set is already loaded for you into the HDFS and consists of three files<br/><br/>
+
+/data/movies.csv consists of the following fields.<br/>
+<ol>
+<li> movieid used to uniquely identify a movie</li>
+<li> title (name) of the movie</li>
+<li> year in which the movie was released</li>
+</ol>
+
+
+/data/moviegenres.csv consists of the following fields.<br/>
+<ol>
+<li> movieid </li>
+<li> name of a genre to which movieid belongs. A movie can belong to multiple genres. </li>
+</ol>
+
+
+/data/ratings.csv consists of the following fields.<br/>
+<ol>
+<li> userid, used to uniquely identify a user. </li>
+<li> movieid </li>
+<li> rating, a double value </li>
+<li> timestamp, when the rating was done </li>
+</ol>
+
+
+  When the data is loaded, you should define the schema so that the columns can be referred
+to by name. Also, datatypes are defined here to avoid unnecessarily casting every time the
+value is used.
+
+<p>
+
+movies = LOAD &#39;/data/movies.csv&#39; USING PigStorage(&#39;,&#39;) AS (movieid:INT, title:CHARARRAY, year:INT); <br/>
+ratings = LOAD &#39;/data/ratings.csv&#39; USING PigStorage(&#39;,&#39;) AS (userid:INT, movieid:INT, rating:DOUBLE, TIMESTAMP); <br/>
+moviegenres = LOAD &#39;/data/moviegenres.csv&#39; USING PigStorage(&#39;,&#39;) AS (movieid:INT, genre:CHARARRAY);<br/>
+
+
+<p>
+(TIMESTAMP left unconverted.)
+
+<p>
+<span style="color: red;">Unless otherwise explicitly stated for a particular question, you will let pig use the default number maps and reduces as it finds fitting for the script and will not override them. Not confirming to this can result in point deduction !!</span></p>
+
+
+
+Your output should be flattened like the format below. <p>
+(Drama,2015,71)<br/>
+(Drama,2016,18)<br/>
+(Fantasy,2015,13)<br/>
+(Fantasy,2016,7)<br/>
+<p>
+<p>
+
+Below is an example of a not flattened output, which is not acceptable <p>
+((Drama,2015),71)<br/>
+((Drama,2016),18)<br/>
+((Fantasy,2015),13)<br/>
+((Fantasy,2016),7)<br/>
+<p><p>
+
+Remember that there are some data values with &#39;(&#39; in the data itself. For example &#39;(no genres listed)&#39; is a data value listed in genre. Do not confuse this for flattening. They can be displayed as such.
+<p>
+
+
+<p><b>TURN IN INSTRUCTIONS:</b> Turn in 11 files <br/>
+<span style="color: red;">What to turn is marked in red</span></p>
+<br/>
+
+
+<h2>Question 0: Name and year of the movies released before 1920 ? (0 Points)</h2>
+
+The goal of this task is to successfully set up and run the Pig cluster. After going through the
+setup instructions, you will run the file example.pig ( provided for
+in the module a4 on mycourses). This script will load the data from HDFS,
+choose only the movies that were released before 1920, output their names and years, ordering the output by the year of the release. 
+You are going to run the file by pasting it into the interactive
+grunt shell.
+<p>
+The script will take a few minutes to run.
+<p>
+At the end, you should see totals for how many records were read in and out and some tuples right
+above the prompt that looks like this:<br/><br/>
+
+
+(Trip to the Moon  A (Voyage dans la lune  Le),1902)<br/>
+(Birth of a Nation  The,1915)<br/>
+(20 000 Leagues Under the Sea,1916)<br/>
+(Intolerance: Loves Struggle Throughout the Ages,1916)<br/>
+(Immigrant  The,1917)<br/>
+(Dogs Life  A,1918)<br/>
+(Billy Blazes  Esq.,1919)<br/>
+
+<br/>
+
+Run the following line to see how the results relation was generated: <br/><br/>
+
+illustrate ordertitles;<br/><br/>
+
+The illustrate command can be a useful tool for you to debug/analyze/verify some of the problems you might encounter as you develop solutions.
+
+<p>
+<span style="color: red;"> You do not need to submit anything for this
+question. </span>
+
+
+
+
+<br/>
+</p><h2>Question 1:  How many movies were released in each year ? (10 Points)</h2>
+<p>
+Make a copy of the example.pig file to answer this question.
+<p>
+
+First, group the movies by year and assign it to moviesperyear.
+<p>
+
+Now write a foreach directive such that you project group attribute of moviesperyear as year and use the COUNT function to count the number of movies associated with each year, calling the later nummovies. Assign this to yearcount.
+
+<p>
+Last, order the tuples in yearcount by year. store the output in your home directory as &#39;q1&#39;.
+
+<p>
+
+Try to run the script using the ILLUSTRATE (see the link on diagnostic info on how to do this). Copy paste the tables output by illustrate into Q1_illustrate.txt
+
+<p><b>What you need to turn in:</b><br/>
+  <span style="color: red;"> Submit your script as Q1_script.pig and Q1_illustrate.txt . 
+
+<h2>Question 2: Find the title of all &#39;Comedy&#39; and &#39;Sci-Fi&#39; movies from 2015 </h2>
+
+Start by selecting only those movies that was released in 2015.
+<p>
+
+Next find movieids from moviegenres of movies that belong to either &#39;Comedy&#39; or &#39;Sci-Fi&#39;. (Remember a movie may belong to either or both).
+
+<p>
+
+Join these two on movieids and to find the movies of interest to our question.
+
+<p>
+Project only the names (title) of the movies from this join.
+
+<p>
+
+Remove the duplicate titles and sort the output on title.
+
+<p> Dump the results to the screen.
+
+
+
+<p> 
+
+answer the following questions
+below:
+<ul>
+(i)
+<ul>
+ (a) How many Maps and Reduces are generated in each job? <p>
+ (b) What does the schema look like just after the join? <p>
+ (c) How long did the query run?
+</p></p></ul>
+(ii) Now modify this script to have your join step run with 4 reduce tasks.<p>
+<ul>
+ (a) How many Maps and Reduces are generated in each job? <p>
+ (b) How long did the query run? <p>
+ (c) Is the difference in query execution time what you were expecting ? Describe what you were expecting to see and (if that is not what happened in the end) why you think it did not happen ?
+</p></p></ul>
+
+</p></ul>
+
+
+  <span style="color: red;">Submit your final script as Q2_script.pig and
+ answers in: pig_answers2.txt.
+</span></p>
+
+<h2>Question 3: For each genre, how many movies were produced in the years 2015 and 2016 ? (15 Points)</h2>
+
+Output genre and the number of movies. Order the output by genre and then by year. You can ignore genres that have no movies. Some movies belong to multiple genres, it is ok to count them once in each genre. Print results to the screen.
+<p>
+
+
+
+Answer the following question:
+<ul>
+   (a) What does the schema look like immediately after the group
+  by? Is is nested or flat? <p>
+   (b) How long did your query run?
+</p></ul>
+
+  <span style="color: red;">Submit your script as Q3_script.pig and
+ answers in: pig_answers3.txt.
+</span></p>
+
+  
+<h2>Question 4: Find years in which the number of movies produced were less than the previous year.
+(15 Points)</h2>
+
+Output should contain year, number of movies produced that year and the number of movies produced the previous year. You need not consider the years in which there are no previous year&#39;s data available for it.
+
+You will use the PigStorage function to generate a CSV file where each line has the
+year, number of movies produced that year and the number of movies produced the previous year.
+
+The file need not be sorted. Write the query in any way you please.
+Store the results in HDFS storage under your home directory as &#39;q4&#39; .
+
+<p>
+
+  <span style="color: red;">Submit your script as Q4_script.pig.
+</span></p>
+
+<h2>Question 5: Find the 10 movies with the maximum number of user ratings.  (15 Points)</h2>
+
+Output to the screen, the movie title and number the of ratings that it has, order them by the number of ratings with movies with maximum number of ratings first. 
+
+<p>
+
+  <span style="color: red;">Submit your script as Q5_script.pig.
+</span></p>
+
+<h2>Question 6: Find the 5 Sci-Fi movies from 2015 with the maximum number of user ratings.  (15 Points)</h2>
+Output to the screen the movie title and the number of ratings it has, order them by the number of ratings with movies with maximum number of ratings first. Do not output more than 5 movies.
+
+<p>
+
+  <span style="color: red;">Submit your script as Q6_script.pig.
+</span></p>
+
+<h2>Question 7: For all the movies released in 2016, output the movieid, title, number of genres to which the movie belongs and the number of user ratings it has received. (15 Points)</h2>
+
+You can ignore movies without any genres and ratings explicitly recorded in the corresponding data sets.
+
+Store the results in HDFS under your home directory as &#39;q7&#39;, in CSV format, similar to Q4. <p>
+
+Next, generate the explain (you do not have to excecute the script to do this) for the entire Q7 script, save them locally as Q7_explain.txt . How to do this described in the link provided for diagnositc info <p>
+
+
+<p>
+
+  <span style="color: red;">Submit your script as Q7_script.pig and Q7_explain.txt .
+</span></p>
+  
+
+
+
+
+
+</p></p></p></p></p></p></p></span></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>
+<script type="text/javascript" src="/d2l/common/math/MathML.js?v=10.7.10.10027-94 "></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() { D2LMathML.DesktopInit('https://s.brightspace.com/lib/mathjax/2.6.1/MathJax.js?config=MML_HTMLorMML','https://s.brightspace.com/lib/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'); });</script></body></html>
