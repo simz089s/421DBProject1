@@ -1,3 +1,5 @@
+--Question 1: How many movies were released in each year
+
 --load the data from HDFS and define the schema
 movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:INT, title:CHARARRAY, year:INT);
 

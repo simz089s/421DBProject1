@@ -1,3 +1,5 @@
+--Question 2: Find the title of all 'Comedy' and 'Sci-Fi' movies from 2015
+
 --load the data from HDFS and define the schema
 movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:INT, title:CHARARRAY, year:INT);
 moviegenres = LOAD '/data/moviegenres.csv' USING PigStorage(',') AS (movieid:INT, genre:CHARARRAY);

@@ -1,3 +1,5 @@
+--Question 4: Find years in which the number of movies produced were less than the previous year
+
 movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:INT, title:CHARARRAY, year:INT); 
 ratings = LOAD '/data/ratings.csv' USING PigStorage(',') AS (userid:INT, movieid:INT, rating:DOUBLE, TIMESTAMP); 
 

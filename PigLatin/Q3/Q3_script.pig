@@ -1,3 +1,5 @@
+--Question 3: For each genre, how many movies were produced in the years 2015 and 2016
+
 --load the data from HDFS and define the schema
 movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:INT, title:CHARARRAY, year:INT);
 moviegenres = LOAD '/data/moviegenres.csv' USING PigStorage(',') AS (movieid:INT, genre:CHARARRAY);
