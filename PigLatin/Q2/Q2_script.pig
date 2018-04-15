@@ -8,7 +8,7 @@ genres_of_interest = FILTER moviegenres by genre IN ('Comedy','Sci-Fi');
 
 movies_of_interest = JOIN movies2015 by movieid, genres_of_interest by movieid;
 
-titles = FOREACH  movies_of_interest generate $1 as title;
+titles = FOREACH movies_of_interest generate $1 as title;
 
 distinct_titles =  DISTINCT titles;
 
