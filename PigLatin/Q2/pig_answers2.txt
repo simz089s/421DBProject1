@@ -1,10 +1,10 @@
 (i)
 	(a)
-			JobId		Maps	Reduces
-		job_1522192504000_7001	2	1	
-		job_1522192504000_7002	1	1		
-		job_1522192504000_7003	1	1		
-		job_1522192504000_7004	1	1	
+		JobId					Maps	Reduces
+		job_1522192504000_7001	2		1	
+		job_1522192504000_7002	1		1		
+		job_1522192504000_7003	1		1		
+		job_1522192504000_7004	1		1	
 
 	(b)
 		movies_of_interest: 
@@ -21,14 +21,17 @@
 
 (ii)
 	(a)
-			JobId		Maps	Reduces
-		job_1522192504000_7045	2	4	
-		job_1522192504000_7046	1	1	
-		job_1522192504000_7048	1	1	
-		job_1522192504000_7049	1	1
+		JobId					Maps	Reduces
+		job_1522192504000_7045	2		4	
+		job_1522192504000_7046	1		1	
+		job_1522192504000_7048	1		1	
+		job_1522192504000_7049	1		1
 
 	(b)
-		 Pig script completed in 1 minute, 27 seconds and 206 milliseconds
+		Pig script completed in 1 minute, 27 seconds and 206 milliseconds
 		
 	(c)
-		
+		A naive expectation would be that the job time is 4 times as short (as
+		fast). In reality, not every part of a job can all be parallelized
+		(Amdahl's law). There are diminishing returns. There is also overhead.
+		Only the reduce part is parallelized too.
