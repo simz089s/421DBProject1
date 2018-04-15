@@ -1,16 +1,21 @@
---Question 6: Find the 5 Sci-Fi movies from 2015 with the maximum number of user ratings
+movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:INT, title:CHARARRAY, year:INT); 
+ratings = LOAD '/data/ratings.csv' USING PigStorage(',') AS (userid:INT, movieid:INT, rating:DOUBLE, TIMESTAMP); 
+moviegenres = LOAD '/data/moviegenres.csv' USING PigStorage(',') AS (movieid:INT, genre:CHARARRAY);
 
-movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:int, title:chararray, year:int);
-ratings = LOAD '/data/ratings.csv' USING PigStorage(',') AS (userid:int, movieid:int, rating:double, timestamp:long);
+ratings_grouped = GROUP ratings by movieid;
+ratings_counted = FOREACH ratings_grouped GENERATE $0,COUNT($1);
 
-movies15 = FILTER movies BY year == 2015;
+filtered_genres = FILTER moviegenres BY genre == 'Sci-Fi' ;
 
-movie_ratings = JOIN movies15 BY movieid, ratings BY movieid;
 
---grouped = GROUP movie_ratings BY movies15.movieid;
+pre_join_tables = JOIN movies by movieid LEFT, ratings_counted by $0;
 
---ratingcount = FOREACH grouped GENERATE flatten(movie_ratings.title),COUNT(movie_ratings.rating) as numratings;
+join_tables = JOIN pre_join_tables by $0, filtered_genres by $0;
 
---orderratings = ORDER ratingcount BY ratings DESC;
+null_replaced = FOREACH join_tables GENERATE $1,($4 is NULL ? 0L : $4);
 
---dump orderratings;
+ordered_count = ORDER null_replaced BY $1 DESC;
+
+out = LIMIT ordered_count 5;
+
+dump out;
