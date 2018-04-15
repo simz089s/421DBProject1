@@ -1,0 +1,21 @@
+(a)
+{
+    group: (
+        moviegenres::genre: chararray,
+        movies1516::year: int
+    ),
+    movies_of_interest: 
+	{
+        	(
+            	movies1516::movieid: int,
+           	movies1516::title: chararray,
+            	movies1516::year: int,
+            	moviegenres::movieid: int,
+            	moviegenres::genre: chararray
+        	)
+    	}
+}
+It is nested as shown with movies_of_interest
+
+(b)
+	Pig script completed in 1 minute, 47 seconds and 89 milliseconds
