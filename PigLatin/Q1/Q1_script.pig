@@ -9,4 +9,4 @@ yearcount = FOREACH moviesperyear GENERATE $0,COUNT(movies.movieid) as nummovies
 -- Order that by year.
 ordered = ORDER yearcount BY $0;
 
-STORE ordered INTO 'Q1'
+STORE ordered INTO 'q1'
