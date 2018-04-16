@@ -6,12 +6,14 @@ moviegenres = LOAD '/data/moviegenres.csv' USING PigStorage(',') AS (movieid:INT
 
 movies1516 = FILTER movies BY year IN(2015,2016);
 
+--Join movies with there genres
 movies_of_interest = JOIN movies1516 by movieid, moviegenres by movieid;
 
 grouped = GROUP movies_of_interest BY (genre,year);
 
 counted = FOREACH grouped generate group.genre,group.year,COUNT($1);
 
+-- order by genre then year
 ordered = ORDER counted by $0,$1;
 
 dump ordered;

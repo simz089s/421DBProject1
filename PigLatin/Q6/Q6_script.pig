@@ -4,6 +4,7 @@ movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:int, title:ch
 ratings = LOAD '/data/ratings.csv' USING PigStorage(',') AS (userid:int, movieid:int, rating:double, timestamp);
 moviegenres = LOAD '/data/moviegenres.csv' USING PigStorage(',') AS (movieid:int, genre:chararray);
 
+--Count first for simplicity
 ratings_grouped = GROUP ratings BY movieid;
 ratings_counted = FOREACH ratings_grouped GENERATE $0,COUNT($1);
 
@@ -11,11 +12,13 @@ filtered_genres = FILTER moviegenres BY genre == 'Sci-Fi';
 
 movies2015 = FILTER movies BY year == 2015;
 
-
+--Left join to keep movies with no ratings
 pre_join_tables = JOIN movies2015 BY movieid LEFT, ratings_counted BY $0;
 
+--Join them with the genre we want
 join_tables = JOIN pre_join_tables BY $0, filtered_genres BY $0;
 
+--Project replacing null # rating with 0
 null_replaced = FOREACH join_tables GENERATE $1,($4 is NULL ? 0L : $4);
 
 ordered_count = ORDER null_replaced BY $1 DESC;
