@@ -7,8 +7,9 @@ ratings_counted = FOREACH ratings_grouped GENERATE $0,COUNT($1);
 
 filtered_genres = FILTER moviegenres BY genre == 'Sci-Fi' ;
 
+movies_filtered = FILTER movies BY year == 2015;
 
-pre_join_tables = JOIN movies by movieid LEFT, ratings_counted by $0;
+pre_join_tables = JOIN movies_filtered by movieid LEFT, ratings_counted by $0;
 
 join_tables = JOIN pre_join_tables by $0, filtered_genres by $0;
 
