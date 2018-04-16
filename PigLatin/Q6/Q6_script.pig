@@ -11,8 +11,12 @@ filtered_genres = FILTER moviegenres BY genre == 'Sci-Fi';
 
 movies2015 = FILTER movies BY year == 2015;
 
+<<<<<<< HEAD
 
 pre_join_tables = JOIN movies2015 BY movieid LEFT, ratings_counted BY $0;
+=======
+pre_join_tables = JOIN movies2015 by movieid LEFT, ratings_counted by $0;
+>>>>>>> 08c173ff7398a9416c4639445f9600585ecb52c8
 
 join_tables = JOIN pre_join_tables BY $0, filtered_genres BY $0;
 
