@@ -6,7 +6,7 @@ movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:INT, title:CH
 moviesperyear = Group movies by year;
 
 -- Read only the attributes we are interested in.
-yearcount = FOREACH moviesperyear GENERATE $0,COUNT(movies.movieid) as nummovies;
+yearcount = FOREACH moviesperyear GENERATE $0,COUNT($1) as nummovies;
 
 -- Order that by year.
 ordered = ORDER yearcount BY $0;

@@ -10,7 +10,7 @@ movies_of_interest = JOIN movies1516 by movieid, moviegenres by movieid;
 
 grouped = GROUP movies_of_interest BY (genre,year);
 
-counted = FOREACH grouped generate group.genre,group.year,COUNT(movies_of_interest.$0);
+counted = FOREACH grouped generate group.genre,group.year,COUNT($1);
 
 ordered = ORDER counted by $0,$1;
 
